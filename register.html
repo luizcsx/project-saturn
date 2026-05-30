@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<script>
+fetch('/api/me').then(r => r.json()).then(u => {
+  if (!u.id) return;
+  const m = document.querySelector('meta[name="user-data"]');
+  m.dataset.authenticated = 'true';
+  m.dataset.id = u.id;
+  m.dataset.username = u.username;
+  m.dataset.duts = u.duts;
+  m.dataset.cores = u.cores;
+  m.dataset.membership = u.membership;
+});
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00A9FE">
+<meta name="og:image" content="favicon.ico">
+<meta name="og:site_name" content="Project SĀTURN">
+<meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
+<meta name="csrf-token" content="">
+<meta name="user-data" data-authenticated="false">
+<title>Register - Project SĀTURN</title>
+<meta name="og:title" content="Register - Project SĀTURN">
+<meta name="author" content="Project SĀTURN">
+<link href="cdn/favicon.ico" rel="icon">
+<link href="cdn/css/c9a0705161b97f89816f.css" rel="stylesheet" type="text/css">
+<link href="cdn/css/0ae4afbd7666558dc6c6.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/all.css">
+<script src="cdn/js/a7ee297bf1549559dc3f.js"></script>
+<script src="cdn/js/2be524371fb890d9a658.js"></script>
+<script src="cdn/js/d5fc6b02ce16b82664fd.js"></script>
+<script src="cdn/js/fd81458147e6d5526c5d.js"></script>
+<script src="cdn/js/57af023c87e71bf36f5a.js"></script>
+<script src="https://hcaptcha.com/1/api.js" async defer></script>
+
+</head>
+<body>
+
+<nav>
+<div class="primary">
+<div class="grid">
+<div class="push-left">
+<ul>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="bazaar.html">Bazaar</a></li>
+<li><a href="crews.html">Crews</a></li>
+<li><a href="search.html">Explorers</a></li>
+<li><a href="nexus.html">Nexus</a></li>
+<li><a href="core-access.html">Core Access</a></li>
+</ul>
+</div>
+<div class="nav-user push-right" id="info">
+<div class="username login-buttons">
+<a href="login.html" class="login-button">Login</a>
+<a href="register.html" class="register-button">Register</a>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="main-holder grid">
+<notification id="notification-v" class="notification"></notification>
+<style>
+    h3 {
+        margin: 2px 0;
+    }
+    h6 {
+        margin: 2px 0;
+        font-size: 12px;
+    }
+    input:not([type="radio"]) {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .genders {
+        margin-bottom: 5px;
+    }
+    input[type="radio" i] {
+        margin: 3px 3px 0 0;
+    }
+    label {
+        margin-right: 5px;
+    }
+</style>
+<div class="col-10-12 push-1-12">
+<div class="card">
+<div class="top blue">
+Register
+</div>
+<div class="content">
+<div class="col-8-12">
+<form method="POST" action="/api/register">
+<input type="hidden" name="_token" value=""> <h3 class="dark-gray-text">Username</h3>
+<h6 class="light-gray-text">How will people recognize you?</h6>
+<input id="username" type="username" name="username" value="" placeholder="Username" required autofocus>
+<h3 class="dark-gray-text">Password</h3>
+<h6 class="light-gray-text">Only you will know this!</h6>
+<input id="password" minlength="6" type="password" name="password" placeholder="Password" value="" required>
+<input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm Password" value="" required>
+<h3 class="dark-gray-text">Email</h3>
+<h6 class="light-gray-text">This must be valid so we can contact you!</h6>
+<input id="email" type="email" name="email" placeholder="Email (optional)" value="">
+<div class="col-1-1" style="margin-top:5px;">
+<div class="h-captcha" data-sitekey="8af8210e-53ce-46e9-971f-66ec41629448"></div>
+</div>
+<div class="col-1-1">
+<div style="padding-top:5px;"></div>
+<button type="submit" class="blue">
+Register
+</button>
+</div>
+<div class="col-1-1">
+<span class="gray-text" style="font-size:14px;">By signing up to Project SĀTURN, you confirm that you have read and agree to the <a class="dark-gray-text bold" href="terms.html" target="_blank">Terms of Service</a>, as well as our <a class="dark-gray-text bold" href="privacy.html" target="_blank">Privacy Policy</a>.</span>
+</div>
+</form>
+</div>
+<div class="col-4-12" style="position:relative;min-height:310px;">
+<div class="col-12-12" style="position:absolute;top:5px;right:5px;">
+<div style="border-radius:5px;border:1px solid #D9D9D9;padding:5px;">
+<h3 class="dark-gray-text">Already have an account?</h3>
+<span class="light-gray-text" style="font-size:15px;">If you've forgotten your password go to <a class="dark-gray-text bold" href="https://projectsaturn.vercel.app/password/forgot.html">forgot password</a>.<br><br>To login, go to <a class="dark-gray-text bold" href="login.html">login</a>.<br><br>Can't play? Go to <a class="dark-gray-text bold" href="download.html">download</a> and install the client!</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+var password = $('#password');
+var passconf = $('#password_confirmation');
+var username = $('#username');
+
+password.on('input change', confPassword);
+passconf.on('input keyup', confPassword);
+username.on('input change', trimUsername);
+
+function confPassword() {
+    if (password.val() && passconf.val() && password.val() !== passconf.val()) {
+        passconf[0].setCustomValidity('Passwords do not match.');
+    } else {
+        passconf[0].setCustomValidity('');
+    }
+    passconf[0].reportValidity(); 
+}
+
+function trimUsername() {
+    var userVal = username.val() || '';
+    if (userVal !== userVal.trim()) {
+        username[0].setCustomValidity('Username cannot have spaces at the beginning or end.');
+    } else {
+        username[0].setCustomValidity('');
+    }
+    username[0].reportValidity();
+}
+</script>
+</div>
+<main-footer id="mainfooter-v"></main-footer>
+
+</body>
+</html>
