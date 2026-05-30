@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const { createClient } = require('@supabase/supabase-js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -17,7 +17,7 @@ async function verifyHcaptcha(token) {
   return data.success === true;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST')
     return res.status(405).json({ error: 'Method not allowed.' });
 
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     .select('id, username, password_hash, duts, cores, membership, admin, banned, ban_reason')
     .eq('username', username)
     .single();
-  
+
   if (error || !user)
     return res.status(401).json({ error: 'Invalid username or password.' });
 
@@ -58,10 +58,9 @@ export default async function handler(req, res) {
   );
 
   const isProd = process.env.VERCEL_ENV === 'production';
-
   res.setHeader('Set-Cookie',
     `saturn_session=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=604800${isProd ? '; Secure' : ''}`
   );
 
   return res.status(200).json({ success: true });
-}
+};
