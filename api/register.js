@@ -1,5 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
-import bcrypt from 'bcryptjs';
+const { createClient } = require('@supabase/supabase-js');
+const bcrypt = require('bcryptjs');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -16,7 +16,7 @@ async function verifyHcaptcha(token) {
   return data.success === true;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST')
     return res.status(405).json({ error: 'Method not allowed.' });
 
@@ -48,11 +48,7 @@ export default async function handler(req, res) {
 
   const { error } = await supabase
     .from('users')
-    .insert({
-      username,
-      email: email || null,
-      password_hash: hash
-    });
+    .insert({ username, email: email || null, password_hash: hash });
 
   if (error) {
     if (error.code === '23505') {
@@ -64,4 +60,4 @@ export default async function handler(req, res) {
   }
 
   return res.status(200).json({ success: true });
-}
+};
