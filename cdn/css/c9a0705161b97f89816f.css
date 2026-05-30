@@ -470,8 +470,8 @@ button:not(.plain),.button:not(.plain) {
 
 button:not(.plain):not([disabled]).blue,.button:not(.plain):not([disabled]).blue {
     color: #fff;
-    background-color: #134b7b;
-    border-color: #869eff
+    background-color: #7b3b13;
+    border-color: #ffd186;
 }
 
 button:not(.plain):not([disabled]).green,.button:not(.plain):not([disabled]).green {
