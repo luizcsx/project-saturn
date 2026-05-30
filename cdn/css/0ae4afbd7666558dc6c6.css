@@ -70,15 +70,15 @@
 }
 
 .workshop {
-    content: url(cdn/images/6e8949c52601cae4c59a.png);
+    content: url(/images/6e8949c52601cae4c59a.png);
 }
 
 .sandcastle {
-    content: url(cdn/images/96319153735ceb278e7d.png);
+    content: url(images/96319153735ceb278e7d.png);
 }
 
 .landing-banner {
-    background-image: url(cdn/images/c53b643bf7949430d3c7.png);
+    background-image: url(/images/c53b643bf7949430d3c7.png);
 }
 
 .new-theme .border-right {
