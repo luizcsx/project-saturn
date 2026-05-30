@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<script>
+fetch('/api/me').then(r => r.json()).then(u => {
+  if (!u.id) return;
+  const m = document.querySelector('meta[name="user-data"]');
+  m.dataset.authenticated = 'true';
+  m.dataset.id = u.id;
+  m.dataset.username = u.username;
+  m.dataset.bits = u.bits;
+  m.dataset.bucks = u.bucks;
+  m.dataset.membership = u.membership;
+});
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00A9FE">
+<meta name="og:image" content="favicon.ico">
+<meta name="og:site_name" content="Project SĀTURN">
+<meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
+<meta name="csrf-token" content="">
+<meta name="user-data" data-authenticated="false">
+<title>Project SĀTURN</title>
+<meta name="og:title" content="Project SĀTURN">
+<meta name="author" content="Project SĀTURN">
+<link href="favicon.ico" rel="icon">
+<link href="cdn/css/c9a0705161b97f89816f.css" rel="stylesheet" type="text/css">
+<link href="cdn/css/0ae4afbd7666558dc6c6.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="cdn/css/all.css">
+<script src="cdn/js/a7ee297bf1549559dc3f.js"></script>
+<script src="cdn/js/2be524371fb890d9a658.js"></script>
+<script src="cdn/js/d5fc6b02ce16b82664fd.js"></script>
+<script src="cdn/js/fd81458147e6d5526c5d.js"></script>
+<script src="cdn/js/57af023c87e71bf36f5a.js"></script>
+
+</head>
+<body>
+
+<nav>
+<div class="primary">
+<div class="grid">
+<div class="push-left">
+<ul>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="bazaar.html">Bazaar</a></li>
+<li><a href="crews.html">Crews</a></li>
+<li><a href="search.html">Explorers</a></li>
+<li><a href="nexus.html">Nexus</a></li>
+<li><a href="core-access.html">Core Access</a></li>
+</ul>
+</div>
+<div class="nav-user push-right" id="info">
+<div class="username login-buttons">
+<a href="login.html" class="login-button">Login</a>
+<a href="register.html" class="register-button">Register</a>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<style>
+body {
+    background-color: #222226;
+}
+</style>
+<div class="new-theme landing-banner index-top-bar">
+<img class="landing-image-top"/>
+<p class="title shadow white-text"> A brand new galaxy of creators with a focus on infinite innovation and cosmic collaboration. </p>
+<a href="register.html">
+<button class="button blue no-overflow">REGISTER NOW</button>
+</a>
+<p class="landing-subtext shadow white-text">
+OR <a class="landing-subtext" href="login.html">LOG IN</a>
+</p>
+</div>
+<div class="main-holder grid">
+<notification id="notification-v" class="notification"></notification>
+<div class="landing-content-section">
+<div class="section-content-left">
+<h1 class="section-content-title">EXPLORING NEW HORIZONS</h1>
+<p class="section-content-text">Connecting players globally to build, share, and play in a community-driven universe built on pure imagination. Project SĀTURN is a fresh start for old friends and new explorers alike. Join our crew and help guide our trajectory into the future!</p>
+</div>
+<div class="section-content-right section-image">
+<img class="section-image sandcastle">
+</div>
+</div>
+<div class="landing-content-section" style="margin-bottom: 60px;">
+<div class="section-content-left section-image">
+<img class="section-image workshop">
+</div>
+<div class="section-content-right">
+<h1 class="section-content-title">A NEW FRONTIER</h1>
+<p class="section-content-text">A fresh, revival sandbox fueled by its community and a commitment to freedom of creation. Project SĀTURN is in its early orbits, constantly building new features and expanding its horizons alongside the talented minds who believe in a player-first universe.</p>
+</div>
+</div>
+</div>
+<main-footer id="mainfooter-v"></main-footer>
+
+</body>
+</html>
