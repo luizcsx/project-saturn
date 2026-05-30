@@ -1,36 +1,47 @@
 (function () {
-  function waitForStore(cb, tries) {
-    tries = tries || 0;
-    if (tries > 40) return;
-    var chunk = self.webpackChunk;
-    if (chunk && chunk.push !== Array.prototype.push) {
-      try {
-        var store = null;
-        var orig = chunk.push.bind(chunk);
-        chunk.push([[999999], {}, function (require) {
-          try { store = require(9933).R; } catch (e) {}
-        }]);
-        if (store) { cb(store); return; }
-      } catch (e) {}
+
+  function notify(msg, type) {
+    if (window._saturnStore && window._saturnStore.setNotification) {
+      window._saturnStore.setNotification(msg, type || 'warning');
     }
-    setTimeout(function () { waitForStore(cb, tries + 1); }, 50);
   }
 
-  waitForStore(function (store) {
-    window._saturnNotify = function (msg, type) {
-      store.setNotification(msg, type || 'warning');
-    };
+  window._saturnNotify = notify;
 
+  function onReady(cb) {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(cb, 100);
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(cb, 100);
+      });
+    }
+  }
+
+  onReady(function () {
     var params = new URLSearchParams(window.location.search);
+
     if (params.get('registered') === '1') {
-      window._saturnNotify('Account created successfully!', 'success');
+      notify('Account created!', 'success');
       history.replaceState(null, '', window.location.pathname);
     }
 
     var err = params.get('error');
     if (err) {
-      window._saturnNotify(decodeURIComponent(err), 'error');
+      notify(decodeURIComponent(err), 'error');
       history.replaceState(null, '', window.location.pathname);
     }
+
+    setTimeout(function () {
+      fetch('/api/notifications')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data && data.length > 0) {
+            notify(data[0].message, data[0].type || 'warning');
+          }
+        })
+        .catch(function () {});
+    }, 1000);
   });
+
 })();
