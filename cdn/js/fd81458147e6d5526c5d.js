@@ -556,7 +556,7 @@
             }
               , f = (0,
             t._)("p", {
-                class: "blue-text no-mobile"
+                class: "yellow-text no-mobile"
             }, " FOLLOW US ", -1)
               , o = {
                 href: "#",
@@ -619,33 +619,33 @@
                     t.iD)("div", v, [f, (0,
                     t._)("a", o, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/discord.svg"
+                        svg: "social/discord.svg"
                     })]), (0,
                     t._)("a", i, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/twitter.svg"
+                        svg: "social/x.svg"
                     })]), (0,
                     t._)("a", h, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/twitch.svg"
+                        svg: "social/github.svg"
                     })]), (0,
                     t._)("a", s, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/youtube.svg"
+                        svg: "social/youtube.svg"
                     })]), (0,
                     t._)("a", n, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/instagram.svg"
+                        svg: "social/instagram.svg"
                     })]), (0,
                     t._)("a", d, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/tiktok.svg"
+                        svg: "social/tiktok.svg"
                     })])])) : (0,
                     t.kq)("v-if", !0), (0,
                     t._)("div", c, [(0,
                     t._)("a", r, [(0,
                     t.Wm)(u.default, {
-                        svg: "cdn/social/saturn-team.svg",
+                        svg: "social/saturn-team.svg",
                         style: {
                             width: "100%",
                             height: "100%"
