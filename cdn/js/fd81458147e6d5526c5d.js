@@ -171,7 +171,8 @@
                     }
                 }
             }
-            const g = new u
+            const g = new u;
+            if (typeof window !== 'undefined') window._saturnStore = g;
         }
         ,
         9426: (y, a, e) => {
