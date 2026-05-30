@@ -619,33 +619,33 @@
                     t.iD)("div", v, [f, (0,
                     t._)("a", o, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/discord.svg"
+                        svg: "cdn/social/discord.svg"
                     })]), (0,
                     t._)("a", i, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/twitter.svg"
+                        svg: "cdn/social/twitter.svg"
                     })]), (0,
                     t._)("a", h, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/twitch.svg"
+                        svg: "cdn/social/twitch.svg"
                     })]), (0,
                     t._)("a", s, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/youtube.svg"
+                        svg: "cdn/social/youtube.svg"
                     })]), (0,
                     t._)("a", n, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/instagram.svg"
+                        svg: "cdn/social/instagram.svg"
                     })]), (0,
                     t._)("a", d, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/tiktok.svg"
+                        svg: "cdn/social/tiktok.svg"
                     })])])) : (0,
                     t.kq)("v-if", !0), (0,
                     t._)("div", c, [(0,
                     t._)("a", r, [(0,
                     t.Wm)(u.default, {
-                        svg: "social/mooshimity.svg",
+                        svg: "cdn/social/saturn-team.svg",
                         style: {
                             width: "100%",
                             height: "100%"
