@@ -143,19 +143,19 @@ button:focus,select:focus {
 @font-face {
     font-family: montserrat;
     font-weight: 500;
-    src: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/font/6fd836a65acf6d59bd2f.woff2)
+    src: url(https://projectsaturn.vercel.app/cdn/font/6fd836a65acf6d59bd2f.woff2)
 }
 
 @font-face {
     font-family: montserrat;
     font-weight: 600;
-    src: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/font/c18b4ac34e93857f7437.woff2) format("woff2"),url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/font/27dfd575571f017cc9a7.ttf) format("ttf")
+    src: url(https://projectsaturn.vercel.app/cdn/font/c18b4ac34e93857f7437.woff2) format("woff2"),url(https://projectsaturn.vercel.app/cdn/font/27dfd575571f017cc9a7.ttf) format("ttf")
 }
 
 @font-face {
     font-family: montserrat;
     font-weight: 700;
-    src: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/font/66fd2310725b78026454.woff2) format("woff2"),url(font/68c8d686f4b0d91b92f1.ttf) format("ttf")
+    src: url(https://projectsaturn.vercel.app/cdn/font/66fd2310725b78026454.woff2) format("woff2"),url(font/68c8d686f4b0d91b92f1.ttf) format("ttf")
 }
 
 body {
@@ -2146,46 +2146,46 @@ dropdown {
     border-radius: 2px;
     z-index: 4;
     right: -139px;
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/0abbf3621c342dd99bf5.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/0abbf3621c342dd99bf5.png)
 }
 
 .download-page .tile4 {
     display: inline;
     position: absolute;
     border-radius: 2px;
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/9e693e9de915c6b618f1.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/9e693e9de915c6b618f1.png)
 }
 
 .download-page .workshop-brick {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/735f18f6c6504fe6fa7e.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/735f18f6c6504fe6fa7e.png)
 }
 
 .download-page .splash.shuttle {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/58143be7c2568468f410.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/58143be7c2568468f410.png)
 }
 
 .download-page .performance-upgrades {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/54dd553ac066ac3043bd.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/54dd553ac066ac3043bd.png)
 }
 
 .download-page .mats-surfaces {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/c96d18d233631f66effe.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/c96d18d233631f66effe.png)
 }
 
 .download-page .intuitive-controls {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/f5e4c756c19e94905448.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/f5e4c756c19e94905448.png)
 }
 
 .download-page .new-envs {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/61b70bd0dacc0083a29d.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/61b70bd0dacc0083a29d.png)
 }
 
 .download-page .dynamic-lighting {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/83d34e1647ab4a3992f6.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/83d34e1647ab4a3992f6.png)
 }
 
 .download-page .ongoing-dev {
-    content: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/images/9ec9ad30157caded9bce.png)
+    content: url(https://projectsaturn.vercel.app/cdn/images/9ec9ad30157caded9bce.png)
 }
 
 @media handheld,only screen and (max-width: 1430px) {
@@ -3279,7 +3279,7 @@ select.register.no-rad {
 
 .icon,.special-e-icon,.special-icon,.arrow-down,.messages-icon,.friends-icon,.bits-icon,.bucks-icon,.royal-icon,.ace-icon,.mint-icon {
     vertical-align: top;
-    background-image: url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/sprites/4b6c5f0d414a499a5ac6.svg);
+    background-image: url(https://projectsaturn.vercel.app/cdn/sprites/4b6c5f0d414a499a5ac6.svg);
     background-repeat: no-repeat;
     background-size: auto auto;
     display: inline-block
@@ -3420,7 +3420,7 @@ select.register.no-rad {
 
 @font-face {
     font-family: emote;
-    src: url(font/fa6e8beec6d1d274c728.ttf),url(https://web.archive.org/web/20230328123501im_/https://css.brkcdn.com/sprites/150dbd707ef7b5ad61c1.svg);
+    src: url(font/fa6e8beec6d1d274c728.ttf),url(https://projectsaturn.vercel.app/cdn/sprites/150dbd707ef7b5ad61c1.svg);
     font-weight: 400;
     font-style: normal
 }
