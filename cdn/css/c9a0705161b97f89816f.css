@@ -351,15 +351,15 @@ nav div ul li a {
 }
 
 .card .top:not(.absolute).green {
-    color: #54a84a;
-    background-color: #0a5812;
-    border-color: #54a84a
+    color: #d16363;
+    background-color: #932323;
+    border-color: #b35858;
 }
 
 .card .top:not(.absolute).blue {
-    color: #869eff;
-    background-color: #134b7b;
-    border-color: #869eff
+    color: #fff;
+    background-color: #d9a04d;
+    border-color: #f1a002;
 }
 
 .card .top:not(.absolute).red {
@@ -476,8 +476,8 @@ button:not(.plain):not([disabled]).blue,.button:not(.plain):not([disabled]).blue
 
 button:not(.plain):not([disabled]).green,.button:not(.plain):not([disabled]).green {
     color: #fff;
-    background-color: #0a5812;
-    border-color: #54a84a
+    background-color: #580a0a;
+    border-color: #a84a4a;
 }
 
 button:not(.plain):not([disabled]).red,.button:not(.plain):not([disabled]).red {
