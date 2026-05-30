@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -20,22 +21,10 @@ export default async function handler(req, res) {
   if (req.method !== 'POST')
     return res.status(405).json({ error: 'Method not allowed.' });
 
-  const { username, password, password_confirmation, email, captcha } = req.body;
+  const { username, password, captcha } = req.body;
 
-  if (!username || username.length < 3 || username.length > 20)
-    return res.status(400).json({ error: 'Username must be 3–20 characters.' });
-
-  if (!/^[a-zA-Z0-9_-]+$/.test(username))
-    return res.status(400).json({ error: 'Username can only contain letters, numbers, _ and -.' });
-
-  if (!password || password.length < 6 || password.length > 72)
-    return res.status(400).json({ error: 'Password must be 6–72 characters.' });
-
-  if (password !== password_confirmation)
-    return res.status(400).json({ error: 'Passwords do not match.' });
-
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return res.status(400).json({ error: 'Invalid email address.' });
+  if (!username || !password)
+    return res.status(400).json({ error: 'Username and password are required.' });
 
   if (!captcha)
     return res.status(400).json({ error: 'Please complete the captcha.' });
@@ -44,24 +33,35 @@ export default async function handler(req, res) {
   if (!captchaOk)
     return res.status(400).json({ error: 'Captcha verification failed. Please try again.' });
 
-  const hash = await bcrypt.hash(password, 12);
-
-  const { error } = await supabase
+  const { data: user, error } = await supabase
     .from('users')
-    .insert({
-      username,
-      email: email || null,
-      password_hash: hash
+    .select('id, username, password_hash, duts, cores, membership, admin, banned, ban_reason')
+    .eq('username', username)
+    .single();
+  
+  if (error || !user)
+    return res.status(401).json({ error: 'Invalid username or password.' });
+
+  const passwordMatch = await bcrypt.compare(password, user.password_hash);
+  if (!passwordMatch)
+    return res.status(401).json({ error: 'Invalid username or password.' });
+
+  if (user.banned)
+    return res.status(403).json({
+      error: `Your account has been banned. Reason: ${user.ban_reason || 'No reason provided.'}`
     });
 
-  if (error) {
-    if (error.code === '23505') {
-      const field = error.message.includes('email') ? 'Email' : 'Username';
-      return res.status(409).json({ error: `${field} is already taken.` });
-    }
-    console.error('Register error:', error);
-    return res.status(500).json({ error: 'Registration failed. Please try again later.' });
-  }
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  const isProd = process.env.VERCEL_ENV === 'production';
+
+  res.setHeader('Set-Cookie',
+    `saturn_session=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=604800${isProd ? '; Secure' : ''}`
+  );
 
   return res.status(200).json({ success: true });
 }
