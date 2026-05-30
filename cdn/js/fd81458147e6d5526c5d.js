@@ -556,10 +556,10 @@
             }
               , f = (0,
             t._)("p", {
-                class: "yellow-text no-mobile"
+                class: "blue-text no-mobile"
             }, " FOLLOW US ", -1)
               , o = {
-                href: "#",
+                href: "https://discord.gg/invite/TQKYvs8T",
                 target: "_blank"
             }
               , i = {
