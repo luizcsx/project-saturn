@@ -1,42 +1,67 @@
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-import { checkRateLimit } from './_ratelimit.js';
-
-export default async function handler(req, res) {
-  if (!(await checkRateLimit(req, res))) return;
+async function verifyHcaptcha(token) {
+  const res = await fetch('https://hcaptcha.com/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `secret=${process.env.HCAPTCHA_SECRET}&response=${token}`
+  });
+  const data = await res.json();
+  return data.success === true;
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST')
-    return res.status(405).end();
+    return res.status(405).json({ error: 'Method not allowed.' });
 
-  const { username, password } = req.body;
+  const { username, password, password_confirmation, email, captcha } = req.body;
 
-  const { data: user } = await supabase
+  if (!username || username.length < 3 || username.length > 20)
+    return res.status(400).json({ error: 'Username must be 3–20 characters.' });
+
+  if (!/^[a-zA-Z0-9_-]+$/.test(username))
+    return res.status(400).json({ error: 'Username can only contain letters, numbers, _ and -.' });
+
+  if (!password || password.length < 6 || password.length > 72)
+    return res.status(400).json({ error: 'Password must be 6–72 characters.' });
+
+  if (password !== password_confirmation)
+    return res.status(400).json({ error: 'Passwords do not match.' });
+
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return res.status(400).json({ error: 'Invalid email address.' });
+
+  if (!captcha)
+    return res.status(400).json({ error: 'Please complete the captcha.' });
+
+  const captchaOk = await verifyHcaptcha(captcha);
+  if (!captchaOk)
+    return res.status(400).json({ error: 'Captcha verification failed. Please try again.' });
+
+  const hash = await bcrypt.hash(password, 12);
+
+  const { error } = await supabase
     .from('users')
-    .select('*')
-    .eq('username', username)
-    .single();
+    .insert({
+      username,
+      email: email || null,
+      password_hash: hash
+    });
 
-  if (!user || !(await bcrypt.compare(password, user.password_hash)))
-    return res.status(401).json({ error: 'Invalid username or password.' });
-
-  const token = jwt.sign(
-    { id: user.id, username: user.username },
-    process.env.JWT_SECRET,
-    { expiresIn: '7d' }
-  );
-
-  res.setHeader('Set-Cookie',
-    `saturn_session=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=604800`
-  );
-  res.redirect(302, '/index.html');
+  if (error) {
+    if (error.code === '23505') {
+      const field = error.message.includes('email') ? 'Email' : 'Username';
+      return res.status(409).json({ error: `${field} is already taken.` });
+    }
+    console.error('Register error:', error);
+    return res.status(500).json({ error: 'Registration failed. Please try again later.' });
   }
 
+  return res.status(200).json({ success: true });
 }
