@@ -6,6 +6,11 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+import { checkRateLimit } from './_ratelimit.js';
+
+export default async function handler(req, res) {
+  if (!(await checkRateLimit(req, res))) return;
+
 export default async function handler(req, res) {
   if (req.method !== 'POST')
     return res.status(405).end();
@@ -28,4 +33,5 @@ export default async function handler(req, res) {
   }
 
   res.redirect(302, '/login.html?registered=1');
+  }
 }
