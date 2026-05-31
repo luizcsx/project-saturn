@@ -7,13 +7,16 @@
     var banner = document.createElement('div');
     banner.id = 'saturn-banner';
 
-    var nav = document.querySelector('nav');
-    if (nav && nav.nextSibling) {
-      nav.parentNode.insertBefore(banner, nav.nextSibling);
-    } else if (nav) {
-      nav.parentNode.appendChild(banner);
+    var mainHolder = document.querySelector('.main-holder');
+    if (mainHolder) {
+      mainHolder.insertBefore(banner, mainHolder.firstChild);
     } else {
-      document.body.prepend(banner);
+      var nav = document.querySelector('nav');
+      if (nav && nav.nextSibling) {
+        nav.parentNode.insertBefore(banner, nav.nextSibling);
+      } else {
+        document.body.prepend(banner);
+      }
     }
 
     return banner;
@@ -43,11 +46,10 @@
   }
 
   onReady(function () {
-
     var params = new URLSearchParams(window.location.search);
 
     if (params.get('registered') === '1') {
-      showBanner('Account created!', 'success');
+      showBanner('Account created! Welcome to Project SĀTURN.', 'success');
       history.replaceState(null, '', window.location.pathname);
       return;
     }
@@ -67,7 +69,6 @@
         }
       })
       .catch(function () {});
-
   });
 
 })();
