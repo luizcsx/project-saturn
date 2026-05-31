@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<script>
+fetch('/api/me').then(r => r.json()).then(u => {
+  if (!u.id) return;
+  const m = document.querySelector('meta[name="user-data"]');
+  m.dataset.authenticated = 'true';
+  m.dataset.id = u.id;
+  m.dataset.username = u.username;
+  m.dataset.duts = u.duts;
+  m.dataset.cores = u.cores;
+  m.dataset.membership = u.membership;
+});
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00A9FE">
+<meta name="og:image" content="favicon.ico">
+<meta name="og:site_name" content="Project SĀTURN">
+<meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
+<meta name="csrf-token" content="">
+<meta name="user-data" data-authenticated="false">
+<title>Privacy Policy - Project SĀTURN</title>
+<meta name="og:title" content="Privacy Policy - Project SĀTURN">
+<meta name="author" content="Project SĀTURN">
+<link href="favicon.ico" rel="icon">
+<link href="cdn/css/c9a0705161b97f89816f.css" rel="stylesheet" type="text/css">
+<link href="cdn/css/0ae4afbd7666558dc6c6.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="cdn/css/all.css">
+<script src="cdn/js/a7ee297bf1549559dc3f.js"></script>
+<script src="cdn/js/2be524371fb890d9a658.js"></script>
+<script src="cdn/js/d5fc6b02ce16b82664fd.js"></script>
+<script src="cdn/js/fd81458147e6d5526c5d.js"></script>
+<script src="cdn/js/57af023c87e71bf36f5a.js"></script>
+<script src="cdn/js/notify.js"></script>
+
+</head>
+<body>
+
+<nav>
+<div class="primary">
+<div class="grid">
+<div class="push-left">
+<ul>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="bazaar.html">Bazaar</a></li>
+<li><a href="crews.html">Crews</a></li>
+<li><a href="search.html">Explorers</a></li>
+<li><a href="nexus.html">Nexus</a></li>
+<li><a href="core-access.html">Core Access</a></li>
+</ul>
+</div>
+<div class="nav-user push-right" id="info">
+<div class="username login-buttons">
+<a href="login.html" class="login-button">Login</a>
+<a href="register.html" class="register-button">Register</a>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="main-holder grid">
+<notification id="notification-v" class="notification"></notification>
+<style>
+.card .content {
+    padding: 0 10px;
+}
+h5 {
+    margin: 5px;
+}
+</style>
+<div class="col-10-12 push-1-12">
+<div class="large-text margin-bottom">Privacy Policy</div>
+<div class="card">
+<div class="top blue">General</div>
+<div class="content">
+<p>This privacy policy regards the website <a href="index.html">projectsaturn.vercel.app</a> and all associated subdomains.</p>
+<p>Any questions regarding this policy may be directed to <a href="https://discord.gg/invite/TQKYvs8T">our Discord server</a>.</p>
+<p>Team reserve the right to change or adapt this policy at any time for any reason.<br>
+We care for your privacy; if you question our practices, please contact <a href="https://discord.gg/invite/TQKYvs8T">our Discord server</a>.</p>
+</div>
+</div>
+<div class="card">
+<div class="top blue">Requested Information</div>
+<div class="content">
+<p>Explorers may view our content anonymously as a guest, though may be restricted from some features. This is due to the lack of control we have over moderating an anonymous account.</p>
+<p>We do not share any information with third-parties for non statistical purposes.</p>
+<p>It is required that explorers choose a safe password that is not easy to guess or crack. As well as this, all passwords are stored in an encrypted form and cannot be accessed by anyone.</p>
+<p>Upon signing up to Project SĀTURN, we require you supply a valid email address. This both verifies your account and enables more user security.</p>
+</div>
+</div>
+<div class="card">
+<div class="top blue">Stored Information</div>
+<div class="content">
+<p>Non-personally identifiable information is automatically collected when visiting <a href="index.html">projectsaturn.vercel.app</a>.</p>
+<p>Project SĀTURN may use scripts, cookies and other methods for monitering activity on our website in order to better administrate and control certain actions.</p>
+<p>Your IP address, browser type and date/time may be stored, though do not obtain any personally indentifiable information.</p>
+<p>All passwords are encrypted, and hence the original password cannot be retrieved by any parties.</p>
+<p>Project SĀTURN will not attempt to obtain your location through a device or application. If your location is ever requested, it will not be shared with third-parties and would be optional.</p>
+<p>For security purposes, all actions performed by users are logged and may be used for support. These logs may consist of your IP address, requested pages, browser type, date/time, and operating system.</p>
+</div>
+</div>
+<div class="card">
+<div class="top blue">Shared Information</div>
+<div class="content">
+<p>Project SĀTURN will only share personal information in ways specified in this privacy policy; we do not sell any personal information to third-party companies.</p>
+<p>Project SĀTURN reserves the right to share personally identifiable information required by law to protect the rights of our website or to comply with a court order.</p>
+<p>To the extent permitted by applicable law, Project SĀTURN may also share personally identifiable information with law enforcement or other agencies if the concealment of such material may risk the safety of both the party involved or our website.</p>
+</div>
+</div>
+<div class="card">
+<div class="top blue">Updating Information</div>
+<div class="content">
+<p>You may change or request the removal of any personally identifiable information stored by Project SĀTURN either on your account settings page or by contacting <a href="https://discord.gg/invite/TQKYvs8T">our Discord server</a>.</p>
+<p>Project SĀTURN will hold all information associated with your account for as long as it is required in providing you our services.<br>
+Your information will be used to settle disputes when needed for legal obligations and to enforce our policies.</p>
+</div>
+</div>
+<h5>Effective Date: 05/29/2026</h5>
+<h5>Last Updated: 05/29/2026</h5>
+</div>
+<div class="col-10-12 push-1-12">
+<div style="text-align:center;margin-top:20px;padding-bottom:25px;">
+</div>
+</div>
+</div>
+<main-footer id="mainfooter-v"></main-footer>
+
+</body>
+</html>
