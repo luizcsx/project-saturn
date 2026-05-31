@@ -29,7 +29,7 @@
   ],
   "headers": [
     {
-      "source": "/dashboard",
+      "source": "/home",
       "headers": [
         { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, proxy-revalidate" },
         { "key": "Pragma",        "value": "no-cache" },
