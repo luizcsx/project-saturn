@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="Project SĀTURN Logo" width="80"/>
+<img src="assets/logo.png" alt="Project SĀTURN Logo" width="80">
 
 # Project SĀTURN
 
@@ -12,7 +12,7 @@ Build, explore, and socialize in a player-first universe.
 [![Node.js](https://img.shields.io/badge/Backend-Node.js-339933?logo=node.js)](https://nodejs.org)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 
-[Live Site](https://projectsaturn.vercel.app) · [Report a Bug](https://github.com/luizcsx/project-saturn/issues) · [Discord](https://discord.gg/TQKYvs8T)
+<a href="https://projectsaturn.vercel.app" target="_blank">Live Site</a> • <a href="https://github.com/luizcsx/project-saturn/issues" target="_blank">Report a Bug</a> • <a href="https://discord.gg/TQKYvs8T" target="_blank">Discord Server</a>
 
 </div>
 
