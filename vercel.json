@@ -1,7 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm install",
   "cleanUrls": true,
-  "outputDirectory": "public",
+  "trailingSlash": false,
   "functions": {
     "api/*.js": {
       "memory": 128,
@@ -10,21 +11,45 @@
   },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
-    { "src": "/css/(.*)", "dest": "/public/css/$1" },
-    { "src": "/js/(.*)", "dest": "/public/js/$1" },
-    { "src": "/cdn/(.*)", "dest": "/public/cdn/$1" },
-    { "src": "/", "dest": "/public/index.html" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    { "src": "/dashboard",     "dest": "/dashboard.html" },
+    { "src": "/login",    "dest": "/login.html" },
+    { "src": "/register", "dest": "/register.html" },
+    { "src": "/explore",  "dest": "/explore.html" },
+    { "src": "/bazaar",   "dest": "/bazaar.html" },
+    { "src": "/crews",    "dest": "/crews.html" },
+    { "src": "/search",   "dest": "/search.html" },
+    { "src": "/nexus",    "dest": "/nexus.html" },
+    { "src": "/core-access", "dest": "/core-access.html" },
+    { "src": "/team",     "dest": "/team.html" },
+    { "src": "/privacy",  "dest": "/privacy.html" },
+    { "src": "/terms",    "dest": "/terms.html" },
+    { "src": "/guidelines", "dest": "/guidelines.html" },
+    { "src": "/",         "dest": "/index.html" },
+    { "src": "/(.*)",     "dest": "/$1" }
   ],
   "headers": [
+    {
+      "source": "/dashboard",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, proxy-revalidate" },
+        { "key": "Pragma",        "value": "no-cache" },
+        { "key": "Expires",       "value": "0" },
+        { "key": "Surrogate-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "X-Frame-Options",        "value": "DENY" },
+        { "key": "X-XSS-Protection",       "value": "1; mode=block" },
+        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
       ]
     }
   ]
