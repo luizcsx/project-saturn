@@ -9,7 +9,7 @@
     return match ? match[2] : null;
   }
   if (!getCookie('saturn_session')) {
-    window.location.replace('/index.html');
+    window.location.replace('/');
   }
 })();
 </script>
@@ -39,15 +39,268 @@ fetch('/api/me').then(r => r.json()).then(u => {
 <meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
 <meta name="csrf-token" content="">
 <meta name="user-data" data-authenticated="false">
-<title>Home - Project SĀTURN</title>
-<meta name="og:title" content="Home - Project SĀTURN">
+<title>Dashboard - Project SĀTURN</title>
+<meta name="og:title" content="Dashboard - Project SĀTURN">
 <meta name="author" content="Project SĀTURN">
 <link href="cdn/favicon.ico" rel="icon">
 <link href="cdn/css/c9a0705161b97f89816f.css" rel="stylesheet" type="text/css">
 <link href="cdn/css/0ae4afbd7666558dc6c6.css" rel="stylesheet" type="text/css">
-<link href="cdn/css/home.jss" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/all.css">
 <link rel="stylesheet" href="cdn/css/notification.css">
+<style>
+.dashboard-wrap {
+  display: flex;
+  gap: 20px;
+  margin-top: 16px;
+}
+.dashboard-left {
+  width: 220px;
+  flex-shrink: 0;
+}
+.dashboard-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar-card {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.avatar-card img.player-avatar {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 8px;
+}
+.avatar-card .player-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.avatar-card .player-currency {
+  font-size: 13px;
+  color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+.avatar-card .player-currency img {
+  width: 16px;
+  height: 16px;
+}
+.avatar-card .currency-arrow {
+  color: #555;
+  cursor: pointer;
+  font-size: 10px;
+}
+.divider-line {
+  border: none;
+  border-top: 1px solid #2e2e34;
+  margin: 10px 0;
+}
+
+.friends-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.friends-count span {
+  color: #fff;
+  font-size: 15px;
+  margin-right: 4px;
+}
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #1e1e22;
+}
+.friend-item:last-child { border-bottom: none; }
+.friend-item img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a2a2e;
+}
+.friend-item .friend-info { flex: 1; min-width: 0; }
+.friend-item .friend-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.online-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #23d160;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.friend-item .friend-msg-btn {
+  font-size: 11px;
+  font-weight: 700;
+  color: #00A9FE;
+  letter-spacing: .5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.friend-item .friend-msg-btn:hover { text-decoration: underline; }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.blog-card {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  min-height: 110px;
+  background: #1e1e24;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+.blog-card .blog-img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  display: block;
+}
+.blog-card .blog-placeholder {
+  width: 100%; height: 110px;
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+}
+.blog-card .blog-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.8));
+  padding: 22px 8px 7px;
+  color: #fff;
+}
+.blog-card .blog-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.blog-card .blog-meta {
+  font-size: 10px;
+  opacity: .75;
+}
+
+.site-notif-banner {
+  width: 100%;
+  background: #ef9526;
+  color: #fff;
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  box-sizing: border-box;
+  display: none;
+}
+.site-notif-banner a { color: #fff; text-decoration: underline; }
+.site-notif-banner.success { background: #23d160; }
+.site-notif-banner.error   { background: #ef263d; }
+.site-notif-banner.info    { background: #7b52ab; }
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.req-badge {
+  background: #ef263d;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+}
+
+.status-box {
+  border: 1px solid #3a3a44;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  background: #1a1a20;
+}
+.status-box textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ccc;
+  font-size: 14px;
+  padding: 12px 14px;
+  resize: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  min-height: 72px;
+}
+.status-box textarea::placeholder { color: #555; }
+.status-submit-wrap { padding: 0 12px 10px; }
+.status-submit {
+  background: #00A9FE;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 7px 22px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  cursor: pointer;
+}
+.status-submit:hover { background: #0090d8; }
+
+.feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #1e1e24;
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-item img {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #2a2a2e;
+  flex-shrink: 0;
+}
+.feed-content { flex: 1; }
+.feed-name { font-weight: 700; color: #fff; font-size: 14px; }
+.feed-time { font-size: 12px; color: #666; margin-left: 5px; }
+.feed-msg  { color: #bbb; font-size: 13px; margin-top: 2px; word-break: break-word; }
+.feed-empty { color: #555; font-size: 13px; padding: 16px 0; text-align: center; }
+
+.guest-prompt {
+  text-align: center;
+  padding: 30px 0;
+  color: #666;
+}
+.guest-prompt p { font-size: 15px; margin-bottom: 12px; }
+</style>
+
 <script src="cdn/js/a7ee297bf1549559dc3f.js"></script>
 <script src="cdn/js/2be524371fb890d9a658.js"></script>
 <script src="cdn/js/d5fc6b02ce16b82664fd.js"></script>
@@ -63,18 +316,18 @@ fetch('/api/me').then(r => r.json()).then(u => {
 <div class="grid">
 <div class="push-left">
 <ul>
-<li><a href="explore.html">Explore</a></li>
-<li><a href="bazaar.html">Bazaar</a></li>
-<li><a href="crews.html">Crews</a></li>
-<li><a href="search.html">Explorers</a></li>
-<li><a href="nexus.html">Nexus</a></li>
-<li><a href="core-access.html">Core Access</a></li>
+<li><a href="/explore">Explore</a></li>
+<li><a href="/bazaar">Bazaar</a></li>
+<li><a href="/crews">Crews</a></li>
+<li><a href="/search">Explorers</a></li>
+<li><a href="/nexus">Nexus</a></li>
+<li><a href="/core-access">Core Access</a></li>
 </ul>
 </div>
 <div class="nav-user push-right" id="info">
 <div class="username login-buttons" id="nav-auth-area">
-<a href="login.html" class="login-button">Login</a>
-<a href="register.html" class="register-button">Register</a>
+<a href="/login" class="login-button">Login</a>
+<a href="/register" class="register-button">Register</a>
 </div>
 </div>
 </div>
@@ -88,9 +341,9 @@ fetch('/api/me').then(r => r.json()).then(u => {
 
   <div class="site-notif-banner" id="site-banner"></div>
 
-  <div class="home-wrap">
+  <div class="dashboard-wrap">
 
-    <div class="home-left" id="home-left" style="display:none;">
+    <div class="dashboard-left" id="dashboard-left" style="display:none;">
       <div class="avatar-card">
         <img class="player-avatar" id="player-avatar" src="" alt="Avatar">
         <div class="player-name" id="player-name"></div>
@@ -106,14 +359,14 @@ fetch('/api/me').then(r => r.json()).then(u => {
       <div id="friends-list"></div>
     </div>
 
-    <div class="home-left" id="home-left-guest">
+    <div class="dashboard-left" id="dashboard-left-guest">
       <div class="avatar-card" style="color:#555; font-size:13px; padding:20px 0;">
         <p>Log in to see your profile.</p>
-        <a href="login.html" class="button blue" style="margin-top:8px; font-size:12px;">Login</a>
+        <a href="/login" class="button blue" style="margin-top:8px; font-size:12px;">Login</a>
       </div>
     </div>
 
-    <div class="home-right">
+    <div class="dashboard-right">
 
       <div class="blog-grid" id="blog-grid">
         <div class="blog-card"><div class="blog-placeholder"></div></div>
@@ -121,7 +374,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
         <div class="blog-card"><div class="blog-placeholder"></div></div>
       </div>
 
-      <div id="home-auth" style="display:none;">
+      <div id="dashboard-auth" style="display:none;">
         <p class="section-title">
           What's New?
           <span class="req-badge" id="req-badge" style="display:none;"></span>
@@ -136,11 +389,11 @@ fetch('/api/me').then(r => r.json()).then(u => {
         <div id="feed-list"><div class="feed-empty">Loading...</div></div>
       </div>
 
-      <div id="home-guest" class="guest-prompt" style="display:none;">
+      <div id="dashboard-guest" class="guest-prompt" style="display:none;">
         <p>Log in to post your status and see your friends' feed.</p>
-        <a href="login.html" class="button blue">Login</a>
+        <a href="/login" class="button blue">Login</a>
         &nbsp;
-        <a href="register.html" class="button">Register</a>
+        <a href="/register" class="button">Register</a>
       </div>
 
     </div>
@@ -175,7 +428,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
     d.textContent = s;
     return d.innerHTML;
   }
-  
+
   fetch('/api/notifications')
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -187,7 +440,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
       }
     }).catch(function(){});
 
-  fetch('/api/home')
+  fetch('/api/dashboard')
     .then(function(r) { return r.json(); })
     .then(function(data) {
 
@@ -209,10 +462,10 @@ fetch('/api/me').then(r => r.json()).then(u => {
       }
 
       if (data.authenticated) {
-        document.getElementById('home-guest').style.display = 'none';
-        document.getElementById('home-auth').style.display = 'block';
-        document.getElementById('home-left').style.display = 'block';
-        document.getElementById('home-left-guest').style.display = 'none';
+        document.getElementById('dashboard-guest').style.display = 'none';
+        document.getElementById('dashboard-auth').style.display = 'block';
+        document.getElementById('dashboard-left').style.display = 'block';
+        document.getElementById('dashboard-left-guest').style.display = 'none';
 
         if (data.friend_requests > 0) {
           var badge = document.getElementById('req-badge');
@@ -238,15 +491,15 @@ fetch('/api/me').then(r => r.json()).then(u => {
         }
 
       } else {
-        document.getElementById('home-auth').style.display = 'none';
-        document.getElementById('home-guest').style.display = 'block';
-        document.getElementById('home-left').style.display = 'none';
-        document.getElementById('home-left-guest').style.display = 'block';
+        document.getElementById('dashboard-auth').style.display = 'none';
+        document.getElementById('dashboard-guest').style.display = 'block';
+        document.getElementById('dashboard-left').style.display = 'none';
+        document.getElementById('dashboard-left-guest').style.display = 'block';
       }
 
     }).catch(function() {
-      document.getElementById('home-guest').style.display = 'block';
-      document.getElementById('home-left-guest').style.display = 'block';
+      document.getElementById('dashboard-guest').style.display = 'block';
+      document.getElementById('dashboard-left-guest').style.display = 'block';
     });
 
   fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
@@ -297,7 +550,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 (function() {
   fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
     if (!u || !u.id) {
-      window.location.replace('/index.html');
+      window.location.replace('/');
       return;
     }
     var area = document.getElementById('nav-auth-area');
@@ -310,7 +563,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
         + '<div id="logout-menu" style="display:none;position:absolute;right:0;top:30px;'
         + 'background:#1e1e24;border:1px solid #3a3a44;border-radius:5px;min-width:140px;z-index:9999;padding:4px 0;">'
         + '<a href="user/' + u.id + '.html" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Profile</a>'
-        + '<a href="settings.html" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Settings</a>'
+        + '<a href="/settings" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Settings</a>'
         + '<hr style="border-color:#2e2e36;margin:4px 0;">'
         + '<a href="#" id="logout-btn" style="display:block;padding:8px 14px;color:#ef263d;font-size:13px;text-decoration:none;">Log Out</a>'
         + '</div>';
@@ -334,7 +587,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
             names.forEach(function(name) { caches.delete(name); });
           });
         }
-        window.location.replace('/index.html');
+        window.location.replace('/');
       });
     }
   });
