@@ -1,15 +1,14 @@
-import { NextResponse } from 'next/server';
-
-export const config = {
-  matcher: ['/dashboard.html']
-};
-
 export default function middleware(req) {
-  const cookie = req.cookies.get('saturn_session');
+  const cookie = req.headers.get('cookie') || '';
 
-  if (!cookie || !cookie.value) {
-    return NextResponse.redirect(new URL('/index.html', req.url));
+  if (!cookie.includes('saturn_session=')) {
+    const url = new URL('/', req.url);
+    return Response.redirect(url, 302);
   }
 
-  return NextResponse.next();
+  return new Response(null, { status: 200 });
 }
+
+export const config = {
+  matcher: ['/dashboard', '/dashboard.html']
+};
