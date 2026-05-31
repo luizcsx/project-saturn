@@ -9,8 +9,8 @@ fetch('/api/me').then(r => r.json()).then(u => {
   m.dataset.authenticated = 'true';
   m.dataset.id = u.id;
   m.dataset.username = u.username;
-  m.dataset.duts = u.duts;
-  m.dataset.cores = u.cores;
+  m.dataset.bits = u.bits;
+  m.dataset.bucks = u.bucks;
   m.dataset.membership = u.membership;
 });
 </script>
@@ -47,18 +47,18 @@ fetch('/api/me').then(r => r.json()).then(u => {
 <div class="grid">
 <div class="push-left">
 <ul>
-<li><a href="explore.html">Explore</a></li>
-<li><a href="bazaar.html">Bazaar</a></li>
-<li><a href="crews.html">Crews</a></li>
-<li><a href="search.html">Explorers</a></li>
-<li><a href="nexus.html">Nexus</a></li>
-<li><a href="core-access.html">Core Access</a></li>
+<li><a href="/explore">Explore</a></li>
+<li><a href="/bazaar">Bazaar</a></li>
+<li><a href="/crews">Crews</a></li>
+<li><a href="/search">Explorers</a></li>
+<li><a href="/nexus">Nexus</a></li>
+<li><a href="/core-access">Core Access</a></li>
 </ul>
 </div>
 <div class="nav-user push-right" id="info">
 <div class="username login-buttons">
-<a href="login.html" class="login-button">Login</a>
-<a href="register.html" class="register-button">Register</a>
+<a href="/login" class="login-button">Login</a>
+<a href="/register" class="register-button">Register</a>
 </div>
 </div>
 </div>
@@ -77,7 +77,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 <input id="username" type="text" name="username" placeholder="Username" required autofocus>
 <div style="height:5px;"></div>
 <input style="display:block;" id="password" type="password" name="password" placeholder="Password" required>
-<a href="password/forgot.html" style="font-size:15px;">Forgot password?</a>
+<a href="/password/forgot" style="font-size:15px;">Forgot password?</a>
 <div style="padding-top:5px;"></div>
 <div class="h-captcha" data-sitekey="ac6410b8-4168-4356-b6cc-fe3cbff4fb4c"></div>
 <div style="padding-top:5px;"></div>
@@ -140,7 +140,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 
       if (window._saturnNotify) window._saturnNotify('Logged in!', 'success');
       setTimeout(function () {
-        window.location.href = '/dashboard.html';
+        window.location.replace(data.redirect || '/dashboard');
       }, 800);
 
     } catch (err) {
