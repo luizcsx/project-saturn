@@ -1,47 +1,49 @@
 (function () {
 
-  function notify(msg, type) {
+  function setNotification(msg, type) {
     if (window._saturnStore && window._saturnStore.setNotification) {
       window._saturnStore.setNotification(msg, type || 'warning');
     }
   }
 
-  window._saturnNotify = notify;
+  window._saturnNotify = setNotification;
 
-  function onReady(cb) {
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      setTimeout(cb, 100);
+  function waitForStore(cb, tries) {
+    tries = tries || 0;
+    if (tries > 60) return;
+    if (window._saturnStore && window._saturnStore.setNotification) {
+      cb();
     } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(cb, 100);
-      });
+      setTimeout(function () { waitForStore(cb, tries + 1); }, 100);
     }
   }
 
-  onReady(function () {
+  waitForStore(function () {
+
     var params = new URLSearchParams(window.location.search);
 
     if (params.get('registered') === '1') {
-      notify('Account created!', 'success');
+      setNotification('Account created!', 'success');
       history.replaceState(null, '', window.location.pathname);
+      return;
     }
 
     var err = params.get('error');
     if (err) {
-      notify(decodeURIComponent(err), 'error');
+      setNotification(decodeURIComponent(err), 'error');
       history.replaceState(null, '', window.location.pathname);
+      return;
     }
 
-    setTimeout(function () {
-      fetch('/api/notifications')
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data && data.length > 0) {
-            notify(data[0].message, data[0].type || 'warning');
-          }
-        })
-        .catch(function () {});
-    }, 1000);
+    fetch('/api/notifications')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.length > 0) {
+          setNotification(data[0].message, data[0].type || 'warning');
+        }
+      })
+      .catch(function () {});
+
   });
 
 })();
