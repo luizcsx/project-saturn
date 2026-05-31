@@ -1,4 +1,4 @@
-#notification-v {
+vue-comp[id^="notification-v"] {
     display: block;
     position: fixed !important;
     top: 0 !important;
@@ -8,7 +8,7 @@
     pointer-events: none;
 }
 
-#notification-v > div {
+vue-comp[id^="notification-v"] > div {
     position: relative !important;
     left: auto !important;
     top: auto !important;
@@ -19,7 +19,7 @@
     box-sizing: border-box;
 }
 
-#notification-v .notification-holder {
+vue-comp[id^="notification-v"] .notification-holder {
     position: relative !important;
     top: 0 !important;
     width: 100%;
@@ -28,7 +28,7 @@
     pointer-events: none;
 }
 
-#notification-v .alert.transition {
+vue-comp[id^="notification-v"] .alert.transition {
     position: absolute !important;
     width: 100% !important;
     left: 0 !important;
@@ -44,20 +44,20 @@
     box-sizing: border-box;
 }
 
-#notification-v .alert.transition.open   { top: 0 !important; }
-#notification-v .alert.transition.closed { top: -60px !important; }
+vue-comp[id^="notification-v"] .alert.transition.open   { top: 0 !important; }
+vue-comp[id^="notification-v"] .alert.transition.closed { top: -60px !important; }
 
-#notification-v .alert a {
+vue-comp[id^="notification-v"] .alert a {
     color: #fff !important;
     text-decoration: underline;
     pointer-events: auto !important;
     cursor: pointer;
 }
 
-#notification-v .alert.warning { background-color: #ef9526 !important; }
-#notification-v .alert.success { background-color: #23d160 !important; }
-#notification-v .alert.error   { background-color: #ef263d !important; }
-#notification-v .alert.info    { background-color: #3273dc !important; }
+vue-comp[id^="notification-v"] .alert.warning { background-color: #ef9526 !important; }
+vue-comp[id^="notification-v"] .alert.success { background-color: #23d160 !important; }
+vue-comp[id^="notification-v"] .alert.error   { background-color: #ef263d !important; }
+vue-comp[id^="notification-v"] .alert.info    { background-color: #3273dc !important; }
 
-nav { position: relative; z-index: 9998; }
+nav        { position: relative; z-index: 9998; }
 .main-holder { position: relative; z-index: 1; }
