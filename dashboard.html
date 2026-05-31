@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+
+<script>
+// Auth guard — runs immediately before anything else loads
+// If no saturn_session cookie, redirect to index instantly
+(function() {
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+  }
+  if (!getCookie('saturn_session')) {
+    window.location.replace('/index.html');
+  }
+})();
+</script>
+
+<script>
+fetch('/api/me').then(r => r.json()).then(u => {
+  if (!u.id) return;
+  const m = document.querySelector('meta[name="user-data"]');
+  m.dataset.authenticated = 'true';
+  m.dataset.id = u.id;
+  m.dataset.username = u.username;
+  m.dataset.duts = u.duts;
+  m.dataset.cores = u.cores;
+  m.dataset.membership = u.membership;
+});
+</script>
+
+
+<!-- Security: prevent caching of authenticated page -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00A9FE">
+<meta name="og:image" content="cdn/favicon.ico">
+<meta name="og:site_name" content="Project SĀTURN">
+<meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
+<meta name="csrf-token" content="">
+<meta name="user-data" data-authenticated="false">
+<title>Home - Project SĀTURN</title>
+<meta name="og:title" content="Home - Project SĀTURN">
+<meta name="author" content="Project SĀTURN">
+<link href="cdn/favicon.ico" rel="icon">
+<link href="cdn/css/c9a0705161b97f89816f.css" rel="stylesheet" type="text/css">
+<link href="cdn/css/0ae4afbd7666558dc6c6.css" rel="stylesheet" type="text/css">
+<link href="cdn/css/home.jss" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/all.css">
+<link rel="stylesheet" href="cdn/css/notification.css">
+<script src="cdn/js/a7ee297bf1549559dc3f.js"></script>
+<script src="cdn/js/2be524371fb890d9a658.js"></script>
+<script src="cdn/js/d5fc6b02ce16b82664fd.js"></script>
+<script src="cdn/js/fd81458147e6d5526c5d.js"></script>
+<script src="cdn/js/57af023c87e71bf36f5a.js"></script>
+<script src="cdn/js/notify.js"></script>
+
+</head>
+<body>
+
+<nav>
+<div class="primary">
+<div class="grid">
+<div class="push-left">
+<ul>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="bazaar.html">Bazaar</a></li>
+<li><a href="crews.html">Crews</a></li>
+<li><a href="search.html">Explorers</a></li>
+<li><a href="nexus.html">Nexus</a></li>
+<li><a href="core-access.html">Core Access</a></li>
+</ul>
+</div>
+<div class="nav-user push-right" id="info">
+<div class="username login-buttons" id="nav-auth-area">
+<a href="login.html" class="login-button">Login</a>
+<a href="register.html" class="register-button">Register</a>
+</div>
+</div>
+</div>
+</div>
+</nav>
+
+<div class="main-holder grid">
+<notification id="notification-v" class="notification"></notification>
+
+<div class="col-10-12 push-1-12">
+
+  <div class="site-notif-banner" id="site-banner"></div>
+
+  <div class="home-wrap">
+
+    <div class="home-left" id="home-left" style="display:none;">
+      <div class="avatar-card">
+        <img class="player-avatar" id="player-avatar" src="" alt="Avatar">
+        <div class="player-name" id="player-name"></div>
+        <div class="player-currency">
+          <span id="player-duts">0</span> Duts
+          &nbsp;·&nbsp;
+          <span id="player-cores">0</span> Cores
+          <span class="currency-arrow">▼</span>
+        </div>
+      </div>
+      <hr class="divider-line">
+      <div class="friends-count"><span id="friend-count">0</span> FRIENDS</div>
+      <div id="friends-list"></div>
+    </div>
+
+    <div class="home-left" id="home-left-guest">
+      <div class="avatar-card" style="color:#555; font-size:13px; padding:20px 0;">
+        <p>Log in to see your profile.</p>
+        <a href="login.html" class="button blue" style="margin-top:8px; font-size:12px;">Login</a>
+      </div>
+    </div>
+
+    <div class="home-right">
+
+      <div class="blog-grid" id="blog-grid">
+        <div class="blog-card"><div class="blog-placeholder"></div></div>
+        <div class="blog-card"><div class="blog-placeholder"></div></div>
+        <div class="blog-card"><div class="blog-placeholder"></div></div>
+      </div>
+
+      <div id="home-auth" style="display:none;">
+        <p class="section-title">
+          What's New?
+          <span class="req-badge" id="req-badge" style="display:none;"></span>
+        </p>
+        <div class="status-box">
+          <textarea id="status-input" placeholder="Right now I'm..." maxlength="200"></textarea>
+          <div class="status-submit-wrap">
+            <button class="status-submit" id="status-btn">SUBMIT</button>
+          </div>
+        </div>
+        <p class="section-title">Your Feed</p>
+        <div id="feed-list"><div class="feed-empty">Loading...</div></div>
+      </div>
+
+      <div id="home-guest" class="guest-prompt" style="display:none;">
+        <p>Log in to post your status and see your friends' feed.</p>
+        <a href="login.html" class="button blue">Login</a>
+        &nbsp;
+        <a href="register.html" class="button">Register</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<main-footer id="mainfooter-v"></main-footer>
+
+<script>
+(function () {
+
+  function timeAgo(d) {
+    var s = Math.floor((Date.now() - new Date(d)) / 1000);
+    if (s < 60)    return s + 's ago';
+    if (s < 3600)  return Math.floor(s/60) + 'm ago';
+    if (s < 86400) return Math.floor(s/3600) + 'h ago';
+    return Math.floor(s/86400) + 'd ago';
+  }
+
+  function fmtDate(d) {
+    return new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'long' });
+  }
+
+  function avatarUrl(id) {
+    return '/api/v1/thumbnails/single?type=1&id=' + id;
+  }
+
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+  
+  fetch('/api/notifications')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && data.length > 0) {
+        var b = document.getElementById('site-banner');
+        b.innerHTML = data[0].message;
+        b.className = 'site-notif-banner ' + (data[0].type || 'warning');
+        b.style.display = 'block';
+      }
+    }).catch(function(){});
+
+  fetch('/api/home')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+
+      var grid = document.getElementById('blog-grid');
+      if (data.posts && data.posts.length > 0) {
+        grid.innerHTML = data.posts.map(function(p) {
+          var img = p.cover_url
+            ? '<img class="blog-img" src="' + esc(p.cover_url) + '" alt="">'
+            : '<div class="blog-placeholder"></div>';
+          return '<a class="blog-card" href="https://projectsaturn-blog.vercel.app/' + esc(p.slug) + '" target="_blank">'
+            + img
+            + '<div class="blog-overlay">'
+            + '<div class="blog-title">' + esc(p.title) + '</div>'
+            + '<div class="blog-meta">' + esc(p.author_name || 'Saturn') + ' · ' + fmtDate(p.created_at) + '</div>'
+            + '</div></a>';
+        }).join('');
+      } else {
+        grid.innerHTML = '<p style="color:#555; font-size:13px; grid-column:span 3;">No blog posts yet.</p>';
+      }
+
+      if (data.authenticated) {
+        document.getElementById('home-guest').style.display = 'none';
+        document.getElementById('home-auth').style.display = 'block';
+        document.getElementById('home-left').style.display = 'block';
+        document.getElementById('home-left-guest').style.display = 'none';
+
+        if (data.friend_requests > 0) {
+          var badge = document.getElementById('req-badge');
+          badge.textContent = data.friend_requests + ' pending';
+          badge.style.display = 'inline-block';
+        }
+
+        var feedEl = document.getElementById('feed-list');
+        if (data.feed && data.feed.length > 0) {
+          feedEl.innerHTML = data.feed.map(function(item) {
+            var uname = item.users ? item.users.username : 'Unknown';
+            var uid   = item.user_id;
+            return '<div class="feed-item">'
+              + '<img src="' + avatarUrl(uid) + '" onerror="this.src=\'cdn/images/default-avatar.png\'">'
+              + '<div class="feed-content">'
+              + '<span class="feed-name">' + esc(uname) + '</span>'
+              + '<span class="feed-time">· ' + timeAgo(item.updated_at) + '</span>'
+              + '<div class="feed-msg">' + esc(item.message) + '</div>'
+              + '</div></div>';
+          }).join('');
+        } else {
+          feedEl.innerHTML = '<div class="feed-empty">Nothing here yet. Add some friends to see their updates!</div>';
+        }
+
+      } else {
+        document.getElementById('home-auth').style.display = 'none';
+        document.getElementById('home-guest').style.display = 'block';
+        document.getElementById('home-left').style.display = 'none';
+        document.getElementById('home-left-guest').style.display = 'block';
+      }
+
+    }).catch(function() {
+      document.getElementById('home-guest').style.display = 'block';
+      document.getElementById('home-left-guest').style.display = 'block';
+    });
+
+  fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
+    if (!u.id) return;
+    document.getElementById('player-avatar').src = avatarUrl(u.id);
+    document.getElementById('player-name').textContent = u.username;
+    document.getElementById('player-duts').textContent = (u.duts || u.bits || 0).toLocaleString();
+    document.getElementById('player-cores').textContent = (u.cores || u.bucks || 0).toLocaleString();
+
+    document.getElementById('friend-count').textContent = '0';
+    document.getElementById('friends-list').innerHTML =
+      '<div class="feed-empty" style="font-size:12px;">Friends coming soon.</div>';
+  });
+
+  document.getElementById('status-btn').addEventListener('click', async function() {
+    var msg = document.getElementById('status-input').value.trim();
+    if (!msg) return;
+
+    this.disabled = true;
+    this.textContent = 'Posting...';
+
+    try {
+      var res = await fetch('/api/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      });
+      if (res.ok) {
+        document.getElementById('status-input').value = '';
+        if (window._saturnNotify) window._saturnNotify('Status updated!', 'success');
+      } else {
+        var d = await res.json();
+        if (window._saturnNotify) window._saturnNotify(d.error || 'Failed to update status.', 'error');
+      }
+    } catch(e) {
+      if (window._saturnNotify) window._saturnNotify('Network error.', 'error');
+    }
+
+    this.disabled = false;
+    this.textContent = 'SUBMIT';
+  });
+
+})();
+</script>
+
+
+<script>
+(function() {
+  fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
+    if (!u || !u.id) {
+      window.location.replace('/index.html');
+      return;
+    }
+    var area = document.getElementById('nav-auth-area');
+    if (area) {
+      area.innerHTML =
+        '<span style="color:#fff;font-size:14px;cursor:pointer;" id="username-nav">'
+        + u.username
+        + ' <span style="font-size:10px;opacity:.6;">▼</span>'
+        + '</span>'
+        + '<div id="logout-menu" style="display:none;position:absolute;right:0;top:30px;'
+        + 'background:#1e1e24;border:1px solid #3a3a44;border-radius:5px;min-width:140px;z-index:9999;padding:4px 0;">'
+        + '<a href="user/' + u.id + '.html" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Profile</a>'
+        + '<a href="settings.html" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Settings</a>'
+        + '<hr style="border-color:#2e2e36;margin:4px 0;">'
+        + '<a href="#" id="logout-btn" style="display:block;padding:8px 14px;color:#ef263d;font-size:13px;text-decoration:none;">Log Out</a>'
+        + '</div>';
+
+      document.getElementById('username-nav').addEventListener('click', function(e) {
+        e.stopPropagation();
+        var menu = document.getElementById('logout-menu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+      });
+
+      document.addEventListener('click', function() {
+        var menu = document.getElementById('logout-menu');
+        if (menu) menu.style.display = 'none';
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', async function(e) {
+        e.preventDefault();
+        await fetch('/api/logout', { method: 'POST' });
+        if ('caches' in window) {
+          caches.keys().then(function(names) {
+            names.forEach(function(name) { caches.delete(name); });
+          });
+        }
+        window.location.replace('/index.html');
+      });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
