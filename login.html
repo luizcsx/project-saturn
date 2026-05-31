@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="theme-dark">
 <head>
+
 <script>
 fetch('/api/me').then(r => r.json()).then(u => {
   if (!u.id) return;
@@ -17,7 +18,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#00A9FE">
-<meta name="og:image" content="favicon.ico">
+<meta name="og:image" content="cdn/favicon.ico">
 <meta name="og:site_name" content="Project SĀTURN">
 <meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
 <meta name="csrf-token" content="">
@@ -63,31 +64,93 @@ fetch('/api/me').then(r => r.json()).then(u => {
 </div>
 </div>
 </nav>
+
 <div class="main-holder grid">
 <notification id="notification-v" class="notification"></notification>
 <div class="col-1-3 push-1-3">
 <div class="card">
-<div class="top green">
-Login
-</div>
+<div class="top green">Login</div>
 <div class="content">
-<form method="POST" action="/api/login">
-<input type="hidden" name="_token" value=""> <input id="username" type="username" name="username" value="" placeholder="Username" required autofocus>
-<div style="height: 5px;"></div>
-<input style="display:block;" id="password" type="password" name="password" autocomplete="password" placeholder="Password" required>
-<a href="https://projectsaturn.vercel.app/password/forgot.html" style="font-size:15px;">Forgot password?</a>
+
+<form id="login-form">
+<input type="hidden" name="_token" value="">
+<input id="username" type="text" name="username" placeholder="Username" required autofocus>
+<div style="height:5px;"></div>
+<input style="display:block;" id="password" type="password" name="password" placeholder="Password" required>
+<a href="password/forgot.html" style="font-size:15px;">Forgot password?</a>
 <div style="padding-top:5px;"></div>
 <div class="h-captcha" data-sitekey="ac6410b8-4168-4356-b6cc-fe3cbff4fb4c"></div>
 <div style="padding-top:5px;"></div>
-<button type="submit" class="green">
-Login
-</button>
+<p id="login-error" style="color:#ff4d4d;font-size:14px;margin-top:4px;display:none;"></p>
+<button type="submit" id="login-btn" class="green">Login</button>
 </form>
+
 </div>
 </div>
 </div>
 </div>
+
 <main-footer id="mainfooter-v"></main-footer>
+
+<script>
+(function () {
+  var form    = document.getElementById('login-form');
+  var errorEl = document.getElementById('login-error');
+  var btn     = document.getElementById('login-btn');
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+    if (window._saturnNotify) window._saturnNotify(msg, 'error');
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    errorEl.style.display = 'none';
+
+    var captchaToken = (typeof hcaptcha !== 'undefined') ? hcaptcha.getResponse() : '';
+    if (!captchaToken) {
+      showError('Please complete the captcha.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Logging in...';
+
+    try {
+      var res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value.trim(),
+          password: document.getElementById('password').value,
+          captcha: captchaToken
+        })
+      });
+
+      var data = await res.json();
+
+      if (!res.ok) {
+        if (typeof hcaptcha !== 'undefined') hcaptcha.reset();
+        showError(data.error || 'Login failed. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Login';
+        return;
+      }
+
+      if (window._saturnNotify) window._saturnNotify('Logged in! Welcome back.', 'success');
+      setTimeout(function () {
+        window.location.href = '/index.html';
+      }, 800);
+
+    } catch (err) {
+      showError('Network error. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
