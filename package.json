@@ -1,15 +1,9 @@
 {
   "name": "project-saturn",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "build": "echo 'Static structure done.'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",
     "@upstash/ratelimit": "^2.0.8",
