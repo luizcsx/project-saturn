@@ -1,60 +1,26 @@
 vue-comp[id^="notification-v"] {
-    display: block;
-    position: static !important;
-    width: 100% !important;
-    z-index: auto !important;
-    pointer-events: auto !important;
+    display: none !important;
 }
 
-vue-comp[id^="notification-v"] > div {
-    position: static !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box;
-}
-
-vue-comp[id^="notification-v"] .notification-holder {
-    position: static !important;
+#saturn-banner {
+    display: none;
     width: 100%;
-    height: auto !important;
-    overflow: visible !important;
-    pointer-events: auto;
-}
-
-vue-comp[id^="notification-v"] .alert.transition {
-    position: static !important;
-    display: block !important;
-    width: 100% !important;
-    top: auto !important;
-    left: auto !important;
-    border-radius: 0 !important;
-    margin: 0 0 10px 0 !important;
-    padding: 12px 20px !important;
+    padding: 10px 20px;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
-    opacity: 1 !important;
-    transition: none !important;
-    pointer-events: auto !important;
+    color: #fff;
     box-sizing: border-box;
+    cursor: default;
 }
 
-vue-comp[id^="notification-v"] .alert.transition.open,
-vue-comp[id^="notification-v"] .alert.transition.closed {
-    display: block !important;
-    opacity: 1 !important;
-    top: auto !important;
-}
+#saturn-banner.warning { background-color: #ef9526; }
+#saturn-banner.success { background-color: #23d160; }
+#saturn-banner.error   { background-color: #ef263d; }
+#saturn-banner.info    { background-color: #7b52ab; }
 
-vue-comp[id^="notification-v"] .alert a {
-    color: #fff !important;
+#saturn-banner a {
+    color: #fff;
     text-decoration: underline;
     cursor: pointer;
 }
-
-vue-comp[id^="notification-v"] .alert.warning { background-color: #ef9526 !important; }
-vue-comp[id^="notification-v"] .alert.success { background-color: #23d160 !important; }
-vue-comp[id^="notification-v"] .alert.error   { background-color: #ef263d !important; }
-vue-comp[id^="notification-v"] .alert.info    { background-color: #3273dc !important; }
