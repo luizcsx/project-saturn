@@ -5,13 +5,14 @@ vue-comp[id^="notification-v"] {
 #saturn-banner {
     display: none;
     width: 100%;
-    padding: 10px 20px;
+    padding: 12px 20px;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
     color: #fff;
     box-sizing: border-box;
-    cursor: default;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 #saturn-banner.warning { background-color: #ef9526; }
