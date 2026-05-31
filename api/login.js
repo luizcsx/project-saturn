@@ -54,13 +54,13 @@ module.exports = async function handler(req, res) {
   const token = jwt.sign(
     { id: user.id, username: user.username },
     process.env.JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: '30d' }
   );
 
   const isProd = process.env.VERCEL_ENV === 'production';
   res.setHeader('Set-Cookie',
-    `saturn_session=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=604800${isProd ? '; Secure' : ''}`
+    `saturn_session=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=2592000${isProd ? '; Secure' : ''}`
   );
 
-  return res.status(200).json({ success: true });
+  return res.status(200).json({ success: true, redirect: '/dashboard.html' });
 };
