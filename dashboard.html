@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="theme-dark">
 <head>
+
 <script>
-// Single auth guard — non-blocking
+// Auth guard — non-blocking
 fetch('/api/me', { credentials: 'include' })
   .then(function(r) { return r.json(); })
   .then(function(u) {
-    if (!u || !u.id) {
-      window.location.replace('/login');
-      return;
-    }
-    // Set user data meta
+    if (!u || !u.id) { window.location.replace('/login'); return; }
     var m = document.querySelector('meta[name="user-data"]');
     if (m) {
       m.dataset.authenticated = 'true';
@@ -41,265 +38,178 @@ fetch('/api/me', { credentials: 'include' })
 <link rel="stylesheet" href="/cdn/css/all.css">
 <link rel="stylesheet" href="/cdn/css/notification.css">
 <style>
-/* ── Dashboard ── */
-.dashboard-wrap {
-  display: flex;
-  gap: 20px;
-  margin-top: 16px;
-}
-.dashboard-left {
-  width: 220px;
-  flex-shrink: 0;
-}
-.dashboard-right {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Avatar card */
-.avatar-card {
+/* ── Dashboard extra styles ── */
+.dashboard-avatar-wrap {
   text-align: center;
-  margin-bottom: 16px;
+  padding-bottom: 10px;
 }
-.avatar-card img.player-avatar {
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
+.dashboard-avatar-wrap img.avatar-img {
+  width: 185px;
+  height: 185px;
   display: block;
   margin: 0 auto 8px;
+  object-fit: cover;
 }
-.avatar-card .player-name {
+.dashboard-username {
   font-size: 18px;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 2px;
+  text-align: center;
 }
-.avatar-card .player-currency {
+.dashboard-bucks {
   font-size: 13px;
   color: #aaa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
+  text-align: center;
+  margin-top: 2px;
 }
-.avatar-card .player-currency img {
-  width: 16px;
-  height: 16px;
-}
-.avatar-card .currency-arrow {
-  color: #555;
-  cursor: pointer;
-  font-size: 10px;
-}
-.divider-line {
-  border: none;
-  border-top: 1px solid #2e2e34;
-  margin: 10px 0;
-}
-
-/* Friends sidebar */
-.friends-count {
-  font-size: 13px;
+.friends-header {
+  font-size: 12px;
   font-weight: 700;
-  color: #888;
   letter-spacing: 1px;
-  margin-bottom: 8px;
+  color: #888;
+  padding: 8px 0 6px;
+  border-top: 1px solid #2e2e34;
+  margin-top: 8px;
 }
-.friends-count span {
-  color: #fff;
-  font-size: 15px;
-  margin-right: 4px;
-}
-.friend-item {
+.friends-header span { color: #fff; font-size: 14px; margin-right: 4px; }
+.friend-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 0;
+  padding: 5px 0;
   border-bottom: 1px solid #1e1e22;
+  text-decoration: none;
 }
-.friend-item:last-child { border-bottom: none; }
-.friend-item img {
-  width: 36px;
-  height: 36px;
+.friend-row:last-child { border-bottom: none; }
+.friend-row img {
+  width: 34px; height: 34px;
   border-radius: 50%;
-  object-fit: cover;
   background: #2a2a2e;
+  flex-shrink: 0;
 }
-.friend-item .friend-info { flex: 1; min-width: 0; }
-.friend-item .friend-name {
+.friend-row .friend-name {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  flex: 1;
 }
-.online-dot {
+.friend-row .online-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
   background: #23d160;
-  display: inline-block;
   flex-shrink: 0;
 }
-.friend-item .friend-msg-btn {
+.friend-row .msg-link {
   font-size: 11px;
   font-weight: 700;
   color: #00A9FE;
   letter-spacing: .5px;
-  cursor: pointer;
-  text-decoration: none;
 }
-.friend-item .friend-msg-btn:hover { text-decoration: underline; }
-
 /* Blog grid */
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.blog-row {
+  display: flex;
   gap: 8px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
-.blog-card {
+.blog-tile {
+  flex: 1;
   position: relative;
   border-radius: 5px;
   overflow: hidden;
-  min-height: 110px;
-  background: #1e1e24;
+  min-height: 115px;
+  background: #1a1a22;
   display: block;
   text-decoration: none;
-  cursor: pointer;
 }
-.blog-card .blog-img {
-  width: 100%;
-  height: 110px;
+.blog-tile .blog-bg {
+  width: 100%; height: 115px;
   object-fit: cover;
   display: block;
+  background: linear-gradient(135deg,#1a1a2e,#0f3460);
 }
-.blog-card .blog-placeholder {
-  width: 100%; height: 110px;
-  background: linear-gradient(135deg, #1a1a2e, #0f3460);
-}
-.blog-card .blog-overlay {
+.blog-tile .blog-overlay {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  background: linear-gradient(transparent, rgba(0,0,0,.8));
-  padding: 22px 8px 7px;
+  background: linear-gradient(transparent,rgba(0,0,0,.8));
+  padding: 20px 8px 7px;
   color: #fff;
 }
-.blog-card .blog-title {
-  font-size: 12px;
-  font-weight: 700;
+.blog-tile .blog-title {
+  font-size: 12px; font-weight: 700;
   margin: 0 0 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.blog-card .blog-meta {
-  font-size: 10px;
-  opacity: .75;
-}
-
-/* Site notification banner */
-.site-notif-banner {
-  width: 100%;
-  background: #ef9526;
-  color: #fff;
-  text-align: center;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 4px;
-  margin-bottom: 14px;
-  box-sizing: border-box;
-  display: none;
-}
-.site-notif-banner a { color: #fff; text-decoration: underline; }
-.site-notif-banner.success { background: #23d160; }
-.site-notif-banner.error   { background: #ef263d; }
-.site-notif-banner.info    { background: #7b52ab; }
-
-/* Whats new */
-.section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0 0 8px;
+.blog-tile .blog-meta { font-size: 10px; opacity: .7; }
+/* Status box — reuses new-theme styles */
+.status-row {
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.req-badge {
-  background: #ef263d;
-  color: #fff;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 1px 7px;
-}
-
-.status-box {
+  gap: 0;
+  margin-bottom: 16px;
   border: 1px solid #3a3a44;
   border-radius: 5px;
   overflow: hidden;
-  margin-bottom: 18px;
-  background: #1a1a20;
 }
-.status-box textarea {
-  width: 100%;
-  background: transparent;
+.status-row textarea {
+  flex: 1;
+  background: #1a1a20;
   border: none;
   outline: none;
   color: #ccc;
   font-size: 14px;
   padding: 12px 14px;
   resize: none;
-  box-sizing: border-box;
   font-family: inherit;
-  min-height: 72px;
+  min-height: 68px;
 }
-.status-box textarea::placeholder { color: #555; }
-.status-submit-wrap { padding: 0 12px 10px; }
-.status-submit {
+.status-row textarea::placeholder { color: #555; }
+.status-row .post-btn {
+  width: 90px;
   background: #00A9FE;
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 7px 22px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .5px;
   cursor: pointer;
+  flex-shrink: 0;
 }
-.status-submit:hover { background: #0090d8; }
-
+.status-row .post-btn:hover { background: #0090d8; }
 /* Feed */
-.feed-item {
+.feed-item-row {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid #1e1e24;
+  border-bottom: 1px solid #1e1e22;
 }
-.feed-item:last-child { border-bottom: none; }
-.feed-item img {
+.feed-item-row:last-child { border-bottom: none; }
+.feed-item-row img {
   width: 38px; height: 38px;
   border-radius: 50%;
-  object-fit: cover;
   background: #2a2a2e;
   flex-shrink: 0;
 }
-.feed-content { flex: 1; }
-.feed-name { font-weight: 700; color: #fff; font-size: 14px; }
-.feed-time { font-size: 12px; color: #666; margin-left: 5px; }
-.feed-msg  { color: #bbb; font-size: 13px; margin-top: 2px; word-break: break-word; }
-.feed-empty { color: #555; font-size: 13px; padding: 16px 0; text-align: center; }
-
-/* Guest prompt */
-.guest-prompt {
+.feed-item-row .feed-name { font-weight: 700; color: #fff; font-size: 14px; }
+.feed-item-row .feed-time { font-size: 12px; color: #666; margin-left: 5px; }
+.feed-item-row .feed-msg  { color: #bbb; font-size: 13px; margin-top: 2px; }
+.feed-empty-msg { color: #666; font-size: 13px; padding: 10px 0; }
+/* Site banner */
+#dash-banner {
+  display: none;
+  width: 100%;
+  padding: 10px 16px;
   text-align: center;
-  padding: 30px 0;
-  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
 }
-.guest-prompt p { font-size: 15px; margin-bottom: 12px; }
+#dash-banner.warning { background: #ef9526; }
+#dash-banner.success { background: #23d160; }
+#dash-banner.error   { background: #ef263d; }
+#dash-banner.info    { background: #7b52ab; }
 </style>
 
 <script src="/cdn/js/a7ee297bf1549559dc3f.js"></script>
@@ -312,6 +222,7 @@ fetch('/api/me', { credentials: 'include' })
 </head>
 <body>
 
+<!-- Primary nav -->
 <nav>
 <div class="primary">
 <div class="grid">
@@ -325,12 +236,30 @@ fetch('/api/me', { credentials: 'include' })
 <li><a href="/core-access">Core Access</a></li>
 </ul>
 </div>
-<div class="nav-user push-right" id="info">
-<div class="username login-buttons" id="nav-auth-area">
+<div class="nav-user push-right" id="nav-right">
+<!-- Filled by JS: currency + username dropdown -->
+<div class="username login-buttons">
 <a href="/login" class="login-button">Login</a>
 <a href="/register" class="register-button">Register</a>
 </div>
 </div>
+</div>
+</div>
+<!-- Secondary nav (logged in) -->
+<div class="secondary" id="secondary-nav" style="display:none;">
+<div class="grid">
+<ul>
+<li><a href="/dashboard">Home</a></li>
+<li><a href="/settings">Settings</a></li>
+<li><a href="/avatar">Avatar</a></li>
+<li><a href="#" id="nav-profile-link">Profile</a></li>
+<li><a href="/download">Download</a></li>
+<li><a href="/trades">Trades</a></li>
+<li><a href="/sets">Sets</a></li>
+<li><a href="/currency">Currency</a></li>
+<li><a href="https://projectsaturn-blog.vercel.app" target="_blank">Blog</a></li>
+<li><a href="/discord" target="_blank">Discord</a></li>
+</ul>
 </div>
 </div>
 </nav>
@@ -338,70 +267,53 @@ fetch('/api/me', { credentials: 'include' })
 <div class="main-holder grid">
 <notification id="notification-v" class="notification"></notification>
 
-<div class="col-10-12 push-1-12">
+<div class="col-10-12 push-1-12" style="margin-top:14px;">
 
-  <!-- Site notification banner -->
-  <div class="site-notif-banner" id="site-banner"></div>
+  <!-- Site banner -->
+  <div id="dash-banner"></div>
 
-  <div class="dashboard-wrap">
+  <div style="display:flex; gap:20px;">
 
     <!-- LEFT: avatar + friends -->
-    <div class="dashboard-left" id="dashboard-left" style="display:none;">
-      <div class="avatar-card">
-        <img class="player-avatar" id="player-avatar" src="" alt="Avatar">
-        <div class="player-name" id="player-name"></div>
-        <div class="player-currency">
-          <span id="player-duts">0</span> Duts
-          &nbsp;·&nbsp;
-          <span id="player-cores">0</span> Cores
-          <span class="currency-arrow">▼</span>
-        </div>
+    <div style="width:200px; flex-shrink:0;">
+      <div class="dashboard-avatar-wrap">
+        <img class="avatar-img" id="dash-avatar" src="" alt="Avatar"
+          onerror="this.src='/cdn/images/default-avatar.png'">
+        <div class="dashboard-username" id="dash-username">...</div>
+        <div class="dashboard-bucks" id="dash-bucks">0</div>
       </div>
-      <hr class="divider-line">
-      <div class="friends-count"><span id="friend-count">0</span> FRIENDS</div>
-      <div id="friends-list"></div>
-    </div>
-
-    <!-- LEFT guest placeholder -->
-    <div class="dashboard-left" id="dashboard-left-guest">
-      <div class="avatar-card" style="color:#555; font-size:13px; padding:20px 0;">
-        <p>Log in to see your profile.</p>
-        <a href="/login" class="button blue" style="margin-top:8px; font-size:12px;">Login</a>
+      <div class="friends-header">
+        <span id="dash-friend-count">0</span> FRIENDS
+      </div>
+      <div id="dash-friends-list">
+        <div class="feed-empty-msg">No friends yet.</div>
       </div>
     </div>
 
-    <!-- RIGHT: blog + feed -->
-    <div class="dashboard-right">
+    <!-- RIGHT: blog + status + feed -->
+    <div style="flex:1; min-width:0;">
 
       <!-- Blog posts -->
-      <div class="blog-grid" id="blog-grid">
-        <div class="blog-card"><div class="blog-placeholder"></div></div>
-        <div class="blog-card"><div class="blog-placeholder"></div></div>
-        <div class="blog-card"><div class="blog-placeholder"></div></div>
+      <div class="blog-row" id="dash-blog">
+        <div class="blog-tile"><div class="blog-bg"></div></div>
+        <div class="blog-tile"><div class="blog-bg"></div></div>
+        <div class="blog-tile"><div class="blog-bg"></div></div>
       </div>
 
-      <!-- Logged in section -->
-      <div id="dashboard-auth" style="display:none;">
-        <p class="section-title">
-          What's New?
-          <span class="req-badge" id="req-badge" style="display:none;"></span>
-        </p>
-        <div class="status-box">
-          <textarea id="status-input" placeholder="Right now I'm..." maxlength="200"></textarea>
-          <div class="status-submit-wrap">
-            <button class="status-submit" id="status-btn">SUBMIT</button>
-          </div>
-        </div>
-        <p class="section-title">Your Feed</p>
-        <div id="feed-list"><div class="feed-empty">Loading...</div></div>
+      <!-- What's New -->
+      <p style="font-size:16px;font-weight:700;color:#fff;margin:0 0 8px;">What's New?</p>
+      <div class="status-row">
+        <textarea id="status-input" placeholder="Right now I'm..." maxlength="200"></textarea>
+        <button class="post-btn" id="status-btn">POST</button>
       </div>
 
-      <!-- Guest section -->
-      <div id="dashboard-guest" class="guest-prompt" style="display:none;">
-        <p>Log in to post your status and see your friends' feed.</p>
-        <a href="/login" class="button blue">Login</a>
-        &nbsp;
-        <a href="/register" class="button">Register</a>
+      <!-- Your Feed -->
+      <p style="font-size:16px;font-weight:700;color:#fff;margin:0 0 8px;">
+        Your Feed
+        <span id="req-badge" style="display:none;background:#ef263d;color:#fff;border-radius:10px;font-size:11px;font-weight:700;padding:1px 7px;margin-left:6px;"></span>
+      </p>
+      <div id="dash-feed">
+        <div class="feed-empty-msg">Loading...</div>
       </div>
 
     </div>
@@ -415,6 +327,12 @@ fetch('/api/me', { credentials: 'include' })
 <script>
 (function () {
 
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = String(s);
+    return d.innerHTML;
+  }
+
   function timeAgo(d) {
     var s = Math.floor((Date.now() - new Date(d)) / 1000);
     if (s < 60)    return s + 's ago';
@@ -424,17 +342,7 @@ fetch('/api/me', { credentials: 'include' })
   }
 
   function fmtDate(d) {
-    return new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'long' });
-  }
-
-  function avatarUrl(id) {
-    return '/api/v1/thumbnails/single?type=1&id=' + id;
-  }
-
-  function esc(s) {
-    var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
+    return new Date(d).toLocaleDateString('en-US', { day:'numeric', month:'long' });
   }
 
   // Site notification banner
@@ -442,102 +350,134 @@ fetch('/api/me', { credentials: 'include' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data && data.length > 0) {
-        var b = document.getElementById('site-banner');
+        var b = document.getElementById('dash-banner');
         b.innerHTML = data[0].message;
-        b.className = 'site-notif-banner ' + (data[0].type || 'warning');
+        b.className = data[0].type || 'warning';
         b.style.display = 'block';
       }
     }).catch(function(){});
 
-  // Main dashboard data
-  fetch('/api/dashboard')
+  // Load user + dashboard data
+  fetch('/api/me', { credentials: 'include' })
     .then(function(r) { return r.json(); })
+    .then(function(u) {
+      if (!u || !u.id) return;
+
+      // Avatar + name + currency
+      document.getElementById('dash-avatar').src = '/api/v1/thumbnails/single?type=1&id=' + u.id;
+      document.getElementById('dash-username').textContent = u.username;
+      document.getElementById('dash-bucks').textContent = (u.cores || 0).toLocaleString();
+
+      // Nav: currency + username dropdown
+      var navRight = document.getElementById('nav-right');
+      navRight.innerHTML =
+        '<span style="color:#fff;font-size:13px;margin-right:6px;">'
+        + '<span class="bits-icon"></span> ' + (u.duts||0)
+        + '</span>'
+        + '<span style="color:#fff;font-size:13px;margin-right:6px;">'
+        + '<span class="bucks-icon"></span> ' + (u.cores||0)
+        + '</span>'
+        + '<span style="color:#fff;font-size:13px;margin-right:6px;">'
+        + '<span class="messages-icon"></span> 0'
+        + '</span>'
+        + '<span style="color:#fff;font-size:13px;margin-right:6px;">'
+        + '<span class="friends-icon"></span> 0'
+        + '</span>'
+        + '<span class="username" id="username-nav" style="color:#fff;font-size:14px;cursor:pointer;position:relative;">'
+        + esc(u.username) + ' <span class="arrow-down"></span>'
+        + '<div id="user-dropdown" style="display:none;position:absolute;right:0;top:28px;'
+        + 'background:#1e1e24;border:1px solid #3a3a44;border-radius:5px;min-width:140px;z-index:9999;padding:4px 0;">'
+        + '<a href="/user/' + u.id + '" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Profile</a>'
+        + '<a href="/settings" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Settings</a>'
+        + '<a href="/avatar" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Avatar</a>'
+        + '<hr style="border-color:#2e2e36;margin:4px 0;">'
+        + '<a href="#" id="logout-btn" style="display:block;padding:8px 14px;color:#ef263d;font-size:13px;text-decoration:none;">Log Out</a>'
+        + '</div></span>';
+
+      // Profile link in secondary nav
+      var pl = document.getElementById('nav-profile-link');
+      if (pl) pl.href = '/user/' + u.id;
+
+      // Show secondary nav
+      document.getElementById('secondary-nav').style.display = 'block';
+
+      // Dropdown toggle
+      document.getElementById('username-nav').addEventListener('click', function(e) {
+        e.stopPropagation();
+        var dd = document.getElementById('user-dropdown');
+        dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+      });
+      document.addEventListener('click', function() {
+        var dd = document.getElementById('user-dropdown');
+        if (dd) dd.style.display = 'none';
+      });
+
+      // Logout
+      document.getElementById('logout-btn').addEventListener('click', async function(e) {
+        e.preventDefault();
+        await fetch('/api/logout', { method: 'POST' });
+        if ('caches' in window) {
+          caches.keys().then(function(n) { n.forEach(function(k) { caches.delete(k); }); });
+        }
+        window.location.replace('/');
+      });
+
+      // Load dashboard data (blog + feed + friends)
+      return fetch('/api/dashboard');
+    })
+    .then(function(r) { return r && r.json(); })
     .then(function(data) {
+      if (!data) return;
 
       // Blog posts
-      var grid = document.getElementById('blog-grid');
+      var blog = document.getElementById('dash-blog');
       if (data.posts && data.posts.length > 0) {
-        grid.innerHTML = data.posts.map(function(p) {
+        blog.innerHTML = data.posts.map(function(p) {
           var img = p.cover_url
-            ? '<img class="blog-img" src="' + esc(p.cover_url) + '" alt="">'
-            : '<div class="blog-placeholder"></div>';
-          return '<a class="blog-card" href="https://projectsaturn-blog.vercel.app/' + esc(p.slug) + '" target="_blank">'
+            ? '<img class="blog-bg" src="' + esc(p.cover_url) + '" alt="">'
+            : '<div class="blog-bg"></div>';
+          return '<a class="blog-tile" href="https://projectsaturn-blog.vercel.app/' + esc(p.slug) + '" target="_blank">'
             + img
             + '<div class="blog-overlay">'
             + '<div class="blog-title">' + esc(p.title) + '</div>'
-            + '<div class="blog-meta">' + esc(p.author_name || 'Saturn') + ' · ' + fmtDate(p.created_at) + '</div>'
+            + '<div class="blog-meta">' + esc(p.author_name||'Saturn') + ' · ' + fmtDate(p.created_at) + '</div>'
             + '</div></a>';
         }).join('');
       } else {
-        grid.innerHTML = '<p style="color:#555; font-size:13px; grid-column:span 3;">No blog posts yet.</p>';
+        blog.innerHTML = '';
       }
 
-      // Auth state
-      if (data.authenticated) {
-        document.getElementById('dashboard-guest').style.display = 'none';
-        document.getElementById('dashboard-auth').style.display = 'block';
-        document.getElementById('dashboard-left').style.display = 'block';
-        document.getElementById('dashboard-left-guest').style.display = 'none';
+      // Friend requests badge
+      if (data.friend_requests > 0) {
+        var badge = document.getElementById('req-badge');
+        badge.textContent = data.friend_requests + ' pending';
+        badge.style.display = 'inline';
+      }
 
-        // Friend requests badge
-        if (data.friend_requests > 0) {
-          var badge = document.getElementById('req-badge');
-          badge.textContent = data.friend_requests + ' pending';
-          badge.style.display = 'inline-block';
-        }
-
-        // Feed
-        var feedEl = document.getElementById('feed-list');
-        if (data.feed && data.feed.length > 0) {
-          feedEl.innerHTML = data.feed.map(function(item) {
-            var uname = item.users ? item.users.username : 'Unknown';
-            var uid   = item.user_id;
-            return '<div class="feed-item">'
-              + '<img src="' + avatarUrl(uid) + '" onerror="this.src=\'cdn/images/default-avatar.png\'">'
-              + '<div class="feed-content">'
-              + '<span class="feed-name">' + esc(uname) + '</span>'
-              + '<span class="feed-time">· ' + timeAgo(item.updated_at) + '</span>'
-              + '<div class="feed-msg">' + esc(item.message) + '</div>'
-              + '</div></div>';
-          }).join('');
-        } else {
-          feedEl.innerHTML = '<div class="feed-empty">Nothing here yet. Add some friends to see their updates!</div>';
-        }
-
+      // Feed
+      var feedEl = document.getElementById('dash-feed');
+      if (data.feed && data.feed.length > 0) {
+        feedEl.innerHTML = data.feed.map(function(item) {
+          var uname = item.users ? item.users.username : 'Unknown';
+          return '<div class="feed-item-row">'
+            + '<img src="/api/v1/thumbnails/single?type=1&id=' + item.user_id + '" onerror="this.src=\'/cdn/images/default-avatar.png\'">'
+            + '<div><span class="feed-name">' + esc(uname) + '</span>'
+            + '<span class="feed-time">· ' + timeAgo(item.updated_at) + '</span>'
+            + '<div class="feed-msg">' + esc(item.message) + '</div></div>'
+            + '</div>';
+        }).join('');
       } else {
-        document.getElementById('dashboard-auth').style.display = 'none';
-        document.getElementById('dashboard-guest').style.display = 'block';
-        document.getElementById('dashboard-left').style.display = 'none';
-        document.getElementById('dashboard-left-guest').style.display = 'block';
+        feedEl.innerHTML = '<div class="feed-empty-msg">Your feed is empty! Add some friends to see their updates.</div>';
       }
 
-    }).catch(function() {
-      document.getElementById('dashboard-guest').style.display = 'block';
-      document.getElementById('dashboard-left-guest').style.display = 'block';
-    });
+    }).catch(function(e) { console.error('Dashboard load error:', e); });
 
-  // Populate avatar/name/currency from session
-  fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
-    if (!u.id) return;
-    document.getElementById('player-avatar').src = avatarUrl(u.id);
-    document.getElementById('player-name').textContent = u.username;
-    document.getElementById('player-duts').textContent = (u.duts || u.bits || 0).toLocaleString();
-    document.getElementById('player-cores').textContent = (u.cores || u.bucks || 0).toLocaleString();
-
-    // Friends list from friendships API (basic — shows count placeholder)
-    document.getElementById('friend-count').textContent = '0';
-    document.getElementById('friends-list').innerHTML =
-      '<div class="feed-empty" style="font-size:12px;">Friends coming soon.</div>';
-  });
-
-  // Status submit
+  // Status POST button
   document.getElementById('status-btn').addEventListener('click', async function() {
     var msg = document.getElementById('status-input').value.trim();
     if (!msg) return;
-
     this.disabled = true;
-    this.textContent = 'Posting...';
-
+    this.textContent = '...';
     try {
       var res = await fetch('/api/status', {
         method: 'POST',
@@ -549,72 +489,15 @@ fetch('/api/me', { credentials: 'include' })
         if (window._saturnNotify) window._saturnNotify('Status updated!', 'success');
       } else {
         var d = await res.json();
-        if (window._saturnNotify) window._saturnNotify(d.error || 'Failed to update status.', 'error');
+        if (window._saturnNotify) window._saturnNotify(d.error || 'Error.', 'error');
       }
     } catch(e) {
       if (window._saturnNotify) window._saturnNotify('Network error.', 'error');
     }
-
     this.disabled = false;
-    this.textContent = 'SUBMIT';
+    this.textContent = 'POST';
   });
 
-})();
-</script>
-
-
-<script>
-// Logout handler — clears session and redirects to index
-(function() {
-  // Double-check auth on load — if /api/me returns no user, redirect
-  fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
-    if (!u || !u.id) {
-      window.location.replace('/');
-      return;
-    }
-    // Render username in nav with logout dropdown
-    var area = document.getElementById('nav-auth-area');
-    if (area) {
-      area.innerHTML =
-        '<span style="color:#fff;font-size:14px;cursor:pointer;" id="username-nav">'
-        + u.username
-        + ' <span style="font-size:10px;opacity:.6;">▼</span>'
-        + '</span>'
-        + '<div id="logout-menu" style="display:none;position:absolute;right:0;top:30px;'
-        + 'background:#1e1e24;border:1px solid #3a3a44;border-radius:5px;min-width:140px;z-index:9999;padding:4px 0;">'
-        + '<a href="user/' + u.id + '.html" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Profile</a>'
-        + '<a href="/settings" style="display:block;padding:8px 14px;color:#ccc;font-size:13px;text-decoration:none;">Settings</a>'
-        + '<hr style="border-color:#2e2e36;margin:4px 0;">'
-        + '<a href="#" id="logout-btn" style="display:block;padding:8px 14px;color:#ef263d;font-size:13px;text-decoration:none;">Log Out</a>'
-        + '</div>';
-
-      // Toggle dropdown
-      document.getElementById('username-nav').addEventListener('click', function(e) {
-        e.stopPropagation();
-        var menu = document.getElementById('logout-menu');
-        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-      });
-
-      // Close on outside click
-      document.addEventListener('click', function() {
-        var menu = document.getElementById('logout-menu');
-        if (menu) menu.style.display = 'none';
-      });
-
-      // Logout
-      document.getElementById('logout-btn').addEventListener('click', async function(e) {
-        e.preventDefault();
-        await fetch('/api/logout', { method: 'POST' });
-        // Clear any client-side cache
-        if ('caches' in window) {
-          caches.keys().then(function(names) {
-            names.forEach(function(name) { caches.delete(name); });
-          });
-        }
-        window.location.replace('/');
-      });
-    }
-  });
 })();
 </script>
 
