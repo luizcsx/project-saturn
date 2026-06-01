@@ -2,46 +2,32 @@
 <html lang="en" class="theme-dark">
 <head>
 <script>
+// Single auth guard — non-blocking
 fetch('/api/me', { credentials: 'include' })
   .then(function(r) { return r.json(); })
   .then(function(u) {
-    if (!u || !u.id) window.location.replace('/login');
+    if (!u || !u.id) {
+      window.location.replace('/login');
+      return;
+    }
+    // Set user data meta
+    var m = document.querySelector('meta[name="user-data"]');
+    if (m) {
+      m.dataset.authenticated = 'true';
+      m.dataset.id = u.id;
+      m.dataset.username = u.username;
+      m.dataset.duts = u.duts || 0;
+      m.dataset.cores = u.cores || 0;
+      m.dataset.membership = u.membership || 0;
+    }
   })
   .catch(function() { window.location.replace('/login'); });
 </script>
 
-<script>
-(function() {
-  function getCookie(name) {
-    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    return match ? match[2] : null;
-  }
-  if (!getCookie('saturn_session')) {
-    window.location.replace('/');
-  }
-})();
-</script>
-
-<script>
-fetch('/api/me').then(r => r.json()).then(u => {
-  if (!u.id) return;
-  const m = document.querySelector('meta[name="user-data"]');
-  m.dataset.authenticated = 'true';
-  m.dataset.id = u.id;
-  m.dataset.username = u.username;
-  m.dataset.duts = u.duts;
-  m.dataset.cores = u.cores;
-  m.dataset.membership = u.membership;
-});
-</script>
-  
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#00A9FE">
-<meta name="og:image" content="cdn/favicon.ico">
+<meta name="og:image" content="/cdn/favicon.ico">
 <meta name="og:site_name" content="Project SĀTURN">
 <meta name="og:description" content="A platform built on its community where you can customise your avatar, create and play games, or just socialise with others!">
 <meta name="csrf-token" content="">
@@ -52,9 +38,10 @@ fetch('/api/me').then(r => r.json()).then(u => {
 <link href="/cdn/favicon.ico" rel="icon">
 <link href="/cdn/css/c9a0705161b97f89816f.css" rel="stylesheet" type="text/css">
 <link href="/cdn/css/0ae4afbd7666558dc6c6.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="/css/all.css">
+<link rel="stylesheet" href="/cdn/css/all.css">
 <link rel="stylesheet" href="/cdn/css/notification.css">
 <style>
+/* ── Dashboard ── */
 .dashboard-wrap {
   display: flex;
   gap: 20px;
@@ -69,6 +56,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
   min-width: 0;
 }
 
+/* Avatar card */
 .avatar-card {
   text-align: center;
   margin-bottom: 16px;
@@ -109,6 +97,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
   margin: 10px 0;
 }
 
+/* Friends sidebar */
 .friends-count {
   font-size: 13px;
   font-weight: 700;
@@ -162,6 +151,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 }
 .friend-item .friend-msg-btn:hover { text-decoration: underline; }
 
+/* Blog grid */
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -208,6 +198,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
   opacity: .75;
 }
 
+/* Site notification banner */
 .site-notif-banner {
   width: 100%;
   background: #ef9526;
@@ -226,6 +217,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 .site-notif-banner.error   { background: #ef263d; }
 .site-notif-banner.info    { background: #7b52ab; }
 
+/* Whats new */
 .section-title {
   font-size: 16px;
   font-weight: 700;
@@ -279,6 +271,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 }
 .status-submit:hover { background: #0090d8; }
 
+/* Feed */
 .feed-item {
   display: flex;
   align-items: flex-start;
@@ -300,6 +293,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
 .feed-msg  { color: #bbb; font-size: 13px; margin-top: 2px; word-break: break-word; }
 .feed-empty { color: #555; font-size: 13px; padding: 16px 0; text-align: center; }
 
+/* Guest prompt */
 .guest-prompt {
   text-align: center;
   padding: 30px 0;
@@ -346,10 +340,12 @@ fetch('/api/me').then(r => r.json()).then(u => {
 
 <div class="col-10-12 push-1-12">
 
+  <!-- Site notification banner -->
   <div class="site-notif-banner" id="site-banner"></div>
 
   <div class="dashboard-wrap">
 
+    <!-- LEFT: avatar + friends -->
     <div class="dashboard-left" id="dashboard-left" style="display:none;">
       <div class="avatar-card">
         <img class="player-avatar" id="player-avatar" src="" alt="Avatar">
@@ -366,6 +362,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
       <div id="friends-list"></div>
     </div>
 
+    <!-- LEFT guest placeholder -->
     <div class="dashboard-left" id="dashboard-left-guest">
       <div class="avatar-card" style="color:#555; font-size:13px; padding:20px 0;">
         <p>Log in to see your profile.</p>
@@ -373,14 +370,17 @@ fetch('/api/me').then(r => r.json()).then(u => {
       </div>
     </div>
 
+    <!-- RIGHT: blog + feed -->
     <div class="dashboard-right">
 
+      <!-- Blog posts -->
       <div class="blog-grid" id="blog-grid">
         <div class="blog-card"><div class="blog-placeholder"></div></div>
         <div class="blog-card"><div class="blog-placeholder"></div></div>
         <div class="blog-card"><div class="blog-placeholder"></div></div>
       </div>
 
+      <!-- Logged in section -->
       <div id="dashboard-auth" style="display:none;">
         <p class="section-title">
           What's New?
@@ -396,6 +396,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
         <div id="feed-list"><div class="feed-empty">Loading...</div></div>
       </div>
 
+      <!-- Guest section -->
       <div id="dashboard-guest" class="guest-prompt" style="display:none;">
         <p>Log in to post your status and see your friends' feed.</p>
         <a href="/login" class="button blue">Login</a>
@@ -436,6 +437,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
     return d.innerHTML;
   }
 
+  // Site notification banner
   fetch('/api/notifications')
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -447,10 +449,12 @@ fetch('/api/me').then(r => r.json()).then(u => {
       }
     }).catch(function(){});
 
+  // Main dashboard data
   fetch('/api/dashboard')
     .then(function(r) { return r.json(); })
     .then(function(data) {
 
+      // Blog posts
       var grid = document.getElementById('blog-grid');
       if (data.posts && data.posts.length > 0) {
         grid.innerHTML = data.posts.map(function(p) {
@@ -468,18 +472,21 @@ fetch('/api/me').then(r => r.json()).then(u => {
         grid.innerHTML = '<p style="color:#555; font-size:13px; grid-column:span 3;">No blog posts yet.</p>';
       }
 
+      // Auth state
       if (data.authenticated) {
         document.getElementById('dashboard-guest').style.display = 'none';
         document.getElementById('dashboard-auth').style.display = 'block';
         document.getElementById('dashboard-left').style.display = 'block';
         document.getElementById('dashboard-left-guest').style.display = 'none';
 
+        // Friend requests badge
         if (data.friend_requests > 0) {
           var badge = document.getElementById('req-badge');
           badge.textContent = data.friend_requests + ' pending';
           badge.style.display = 'inline-block';
         }
 
+        // Feed
         var feedEl = document.getElementById('feed-list');
         if (data.feed && data.feed.length > 0) {
           feedEl.innerHTML = data.feed.map(function(item) {
@@ -509,6 +516,7 @@ fetch('/api/me').then(r => r.json()).then(u => {
       document.getElementById('dashboard-left-guest').style.display = 'block';
     });
 
+  // Populate avatar/name/currency from session
   fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
     if (!u.id) return;
     document.getElementById('player-avatar').src = avatarUrl(u.id);
@@ -516,11 +524,13 @@ fetch('/api/me').then(r => r.json()).then(u => {
     document.getElementById('player-duts').textContent = (u.duts || u.bits || 0).toLocaleString();
     document.getElementById('player-cores').textContent = (u.cores || u.bucks || 0).toLocaleString();
 
+    // Friends list from friendships API (basic — shows count placeholder)
     document.getElementById('friend-count').textContent = '0';
     document.getElementById('friends-list').innerHTML =
       '<div class="feed-empty" style="font-size:12px;">Friends coming soon.</div>';
   });
 
+  // Status submit
   document.getElementById('status-btn').addEventListener('click', async function() {
     var msg = document.getElementById('status-input').value.trim();
     if (!msg) return;
@@ -554,12 +564,15 @@ fetch('/api/me').then(r => r.json()).then(u => {
 
 
 <script>
+// Logout handler — clears session and redirects to index
 (function() {
+  // Double-check auth on load — if /api/me returns no user, redirect
   fetch('/api/me').then(function(r) { return r.json(); }).then(function(u) {
     if (!u || !u.id) {
       window.location.replace('/');
       return;
     }
+    // Render username in nav with logout dropdown
     var area = document.getElementById('nav-auth-area');
     if (area) {
       area.innerHTML =
@@ -575,20 +588,24 @@ fetch('/api/me').then(r => r.json()).then(u => {
         + '<a href="#" id="logout-btn" style="display:block;padding:8px 14px;color:#ef263d;font-size:13px;text-decoration:none;">Log Out</a>'
         + '</div>';
 
+      // Toggle dropdown
       document.getElementById('username-nav').addEventListener('click', function(e) {
         e.stopPropagation();
         var menu = document.getElementById('logout-menu');
         menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
       });
 
+      // Close on outside click
       document.addEventListener('click', function() {
         var menu = document.getElementById('logout-menu');
         if (menu) menu.style.display = 'none';
       });
 
+      // Logout
       document.getElementById('logout-btn').addEventListener('click', async function(e) {
         e.preventDefault();
         await fetch('/api/logout', { method: 'POST' });
+        // Clear any client-side cache
         if ('caches' in window) {
           caches.keys().then(function(names) {
             names.forEach(function(name) { caches.delete(name); });
